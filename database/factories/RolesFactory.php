@@ -17,7 +17,9 @@ class RolesFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->unique()->jobTitle(),
+            'color' => $this->faker->hexColor(),
+            'is_admin' => $this->faker->boolean(0),
         ];
     }
 }
