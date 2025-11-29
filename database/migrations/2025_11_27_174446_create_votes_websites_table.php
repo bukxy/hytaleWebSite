@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('url');
-            $table->string('token');
+            $table->string('verification_key');
+            $table->boolean('has_verification')->default(true);
+            $table->boolean('is_enabled')->default(true);
             $table->timestamps();
         });
     }
