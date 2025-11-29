@@ -43,7 +43,7 @@ const mainNavItems: NavItem[] = [
 
 export function FrontSidebar() {
     return (
-        <Sidebar collapsible="icon" variant="inset">
+        <Sidebar collapsible="icon" variant="inset" isFrontNav>
             <SidebarContent>
                 <NavMain items={mainNavItems} />
             </SidebarContent>
