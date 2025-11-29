@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { VariantProps, cva } from "class-variance-authority"
-import { PanelLeftIcon } from "lucide-react"
+import { ArrowBigLeft, ArrowBigRight, Menu, X } from "lucide-react"
 
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
@@ -25,6 +25,9 @@ import {
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
+const SIDEBAR_WIDTH_FRONT = "10rem"
+const SIDEBAR_WIDTH_MOBILE_FRONT = "100%"
+const SIDEBAR_WIDTH_ICON_FRONT = "3rem"
 const SIDEBAR_WIDTH = "16rem"
 const SIDEBAR_WIDTH_MOBILE = "18rem"
 const SIDEBAR_WIDTH_ICON = "3rem"
@@ -38,6 +41,7 @@ type SidebarContext = {
   setOpenMobile: (open: boolean) => void
   isMobile: boolean
   toggleSidebar: () => void
+  isFrontNav?: boolean
 }
 
 const SidebarContext = React.createContext<SidebarContext | null>(null)
@@ -63,6 +67,7 @@ function SidebarProvider({
   defaultOpen?: boolean
   open?: boolean
   onOpenChange?: (open: boolean) => void
+  isFrontNav?: boolean
 }) {
   const isMobile = useIsMobile()
   const [openMobile, setOpenMobile] = React.useState(false)
@@ -111,6 +116,8 @@ function SidebarProvider({
   // This makes it easier to style the sidebar with Tailwind classes.
   const state = open ? "expanded" : "collapsed"
 
+  const isFrontNav = props.isFrontNav ?? false
+
   const contextValue = React.useMemo<SidebarContext>(
     () => ({
       state,
@@ -120,8 +127,9 @@ function SidebarProvider({
       openMobile,
       setOpenMobile,
       toggleSidebar,
+      isFrontNav
     }),
-    [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar]
+    [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar, isFrontNav]
   )
 
   return (
@@ -131,8 +139,8 @@ function SidebarProvider({
           data-slot="sidebar-wrapper"
           style={
             {
-              "--sidebar-width": SIDEBAR_WIDTH,
-              "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
+              "--sidebar-width": isFrontNav ? SIDEBAR_WIDTH_FRONT : SIDEBAR_WIDTH,
+              "--sidebar-width-icon": isFrontNav ? SIDEBAR_WIDTH_ICON_FRONT : SIDEBAR_WIDTH_ICON,
               ...style,
             } as React.CSSProperties
           }
@@ -160,8 +168,9 @@ function Sidebar({
   side?: "left" | "right"
   variant?: "sidebar" | "floating" | "inset"
   collapsible?: "offcanvas" | "icon" | "none"
+  isFrontNav?: boolean
 }) {
-  const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
+  const { isMobile, state, openMobile, setOpenMobile} = useSidebar()
 
   if (collapsible === "none") {
     return (
@@ -178,6 +187,8 @@ function Sidebar({
     )
   }
 
+  const isFrontNav = props.isFrontNav ?? false
+
   if (isMobile) {
     return (
       <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
@@ -192,12 +203,15 @@ function Sidebar({
           className="bg-sidebar text-sidebar-foreground w-(--sidebar-width) p-0 [&>button]:hidden"
           style={
             {
-              "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
+              "--sidebar-width": isFrontNav ? SIDEBAR_WIDTH_MOBILE_FRONT : SIDEBAR_WIDTH_MOBILE,
             } as React.CSSProperties
           }
           side={side}
         >
-          <div className="flex h-full w-full flex-col">{children}</div>
+          <div className="flex h-full w-full flex-col">
+            {/*<SidebarTrigger />*/}
+            {children}
+          </div>
         </SheetContent>
       </Sheet>
     )
@@ -252,8 +266,23 @@ function SidebarTrigger({
   className,
   onClick,
   ...props
-}: React.ComponentProps<typeof Button>) {
+}: React.ComponentProps<typeof Button>
+& { isMobile?: boolean})
+{
   const { toggleSidebar } = useSidebar()
+  const isOpen = useSidebar()
+  const isMobile = useIsMobile()
+
+  let menuIcon;
+  if (!isOpen.open && !isMobile) {
+    menuIcon = <ArrowBigRight />
+  } else if (isOpen.open && !isMobile) {
+    menuIcon = <ArrowBigLeft />
+  } else if (!isOpen.openMobile && isMobile){
+    menuIcon = <Menu />
+  } else {
+    menuIcon = <X />
+  }
 
   return (
     <Button
@@ -261,14 +290,14 @@ function SidebarTrigger({
       data-slot="sidebar-trigger"
       variant="ghost"
       size="icon"
-      className={cn("h-7 w-7", className)}
+      className={cn("h-7 w-7 z-9999 fixed pointer-events-auto", className)}
       onClick={(event) => {
         onClick?.(event)
         toggleSidebar()
       }}
       {...props}
     >
-      <PanelLeftIcon />
+      {menuIcon}
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )
