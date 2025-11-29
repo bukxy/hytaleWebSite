@@ -141,3 +141,8 @@
         @apply bg-background text-foreground;
     }
 }
+
+.icon-size-front-vav-menu {
+    width: 1.5rem;
+    height: 1.5rem;
+}
