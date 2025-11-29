@@ -16,5 +16,5 @@ export function FrontShell({ children, variant = 'header' }: FrontShellProps) {
         );
     }
 
-    return <SidebarProvider defaultOpen={isOpen}>{children}</SidebarProvider>;
+    return <SidebarProvider defaultOpen={isOpen} isFrontNav>{children}</SidebarProvider>;
 }
