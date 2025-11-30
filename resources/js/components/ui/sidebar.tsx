@@ -209,7 +209,6 @@ function Sidebar({
           side={side}
         >
           <div className="flex h-full w-full flex-col">
-            {/*<SidebarTrigger />*/}
             {children}
           </div>
         </SheetContent>
