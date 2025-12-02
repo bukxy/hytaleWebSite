@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vote_rewards', function (Blueprint $table) {
+        Schema::create('votes_rewards', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->decimal('chances');
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('vote_rewards');
+        Schema::dropIfExists('votes_rewards');
     }
 };
