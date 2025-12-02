@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\VotesWebsites;
+use App\Models\VoteWebsite;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,9 +15,9 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            RolesSeeder::class,
+            RoleSeeder::class,
             UserSeeder::class,
-            VotesWebsitesSeeder::class,
+
             VoteSeeder::class,
         ]);
     }
