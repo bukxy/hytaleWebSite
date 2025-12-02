@@ -13,9 +13,14 @@ return new class extends Migration
     {
         Schema::create('votes', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('created_at');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('votes_websites_id')->constrained()->onDelete('cascade');
+
+            $table->unsignedBigInteger('user_id')->default(1);
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
+
+            $table->unsignedBigInteger('vote_website_id')->default(1);
+            $table->foreign('vote_website_id')->references('id')->on('votes_websites')->cascadeOnDelete();
+
+            $table->timestamps();
         });
     }
 
