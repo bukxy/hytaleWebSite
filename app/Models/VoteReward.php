@@ -5,8 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class vote_rewards extends Model
+class VoteReward extends Model
 {
     /** @use HasFactory<\Database\Factories\VoteRewardsFactory> */
     use HasFactory;
+
+    protected $table = 'vote_rewards';
 }

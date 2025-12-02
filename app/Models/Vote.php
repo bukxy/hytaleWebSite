@@ -16,10 +16,9 @@ class Vote extends Model
      *
      * @var string
      */
-    protected $table = 'vote';
+    protected $table = 'votes';
 
     protected $fillable = [
-        'vote_id',
         'user_id',
         'created_at',
         'vote_website_id',
