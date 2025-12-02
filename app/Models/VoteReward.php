@@ -10,5 +10,5 @@ class VoteReward extends Model
     /** @use HasFactory<\Database\Factories\VoteRewardsFactory> */
     use HasFactory;
 
-    protected $table = 'vote_rewards';
+    protected $table = 'votes_rewards';
 }
