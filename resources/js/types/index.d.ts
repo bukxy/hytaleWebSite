@@ -41,3 +41,29 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface Vote {
+    id: number;
+    voter_name: string;
+    created_at: string;
+    voter_email?: string;
+    website: string;
+    [key: string]: unknown; // This allows for additional properties...
+}
+
+export interface VoteWebsite {
+    id: number;
+    name: string;
+    url: string;
+    created_at: string;
+    updated_at: string;
+    is_enabled: boolean;
+    has_verification: boolean;
+    [key: string]: unknown; // This allows for additional properties...
+}
+
+export interface TableColumn<T> {
+    key: string | keyof T;
+    label: string;
+    width?: string;
+}
