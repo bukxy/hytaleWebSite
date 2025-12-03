@@ -24,4 +24,13 @@ class Vote extends Model
         'vote_website_id',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function voteWebsite()
+    {
+        return $this->belongsTo(VoteWebsite::class);
+    }
 }
