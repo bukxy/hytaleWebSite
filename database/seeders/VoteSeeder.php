@@ -23,6 +23,7 @@ class VoteSeeder extends Seeder
                 'verification_key' => 'https://topg.org/servers/minecraft/mcpe-servers/vote/123456',
                 'has_verification' => false,
                 'is_enabled' => true,
+                'created_by' => 1,
             ]
         );
 
