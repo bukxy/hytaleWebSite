@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('votes', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('user_id')->default(1);
+            $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
 
-            $table->unsignedBigInteger('vote_website_id')->default(1);
+            $table->unsignedBigInteger('vote_website_id');
             $table->foreign('vote_website_id')->references('id')->on('votes_websites')->cascadeOnDelete();
 
             $table->timestamps();
