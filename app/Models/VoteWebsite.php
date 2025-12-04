@@ -11,4 +11,14 @@ class VoteWebsite extends Model
     use HasFactory;
 
     protected $table = 'votes_websites';
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
 }
