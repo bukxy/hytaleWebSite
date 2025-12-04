@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\VoteController;
+use App\Http\Controllers\VoteWebsiteController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -42,6 +43,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::prefix('vote', )->group(function () {
                 Route::get('/', [VoteController::class, 'retrieve'])->name('vote');
+            });
+
+            Route::prefix('vote_website', )->group(function () {
+                Route::get('/', [VoteWebsiteController::class, 'retrieve'])->name('vote_website');
+                Route::get('/create', [VoteWebsiteController::class, 'create'])->name('vote_website_create');
             });
 
         });
