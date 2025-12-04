@@ -18,6 +18,13 @@ return new class extends Migration
             $table->string('verification_key');
             $table->boolean('has_verification')->default(true);
             $table->boolean('is_enabled')->default(true);
+
+            $table->unsignedBigInteger('created_by');
+            $table->foreign('created_by')->references('id')->on('users');
+
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->foreign('updated_by')->references('id')->on('users');
+
             $table->timestamps();
         });
     }
