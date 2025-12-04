@@ -56,7 +56,9 @@ export interface VoteWebsite {
     name: string;
     url: string;
     created_at: string;
+    created_by: string;
     updated_at: string;
+    updated_by: string;
     is_enabled: boolean;
     has_verification: boolean;
     [key: string]: unknown; // This allows for additional properties...
@@ -66,4 +68,7 @@ export interface TableColumn<T> {
     key: string | keyof T;
     label: string;
     width?: string;
+    type?: 'date' | 'number' | 'boolean';
+    hms?: boolean; // for date type, whether to show hours, minutes, seconds
+    editHref?: (row: T) => string;
 }
