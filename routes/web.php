@@ -36,21 +36,22 @@ Route::get('/shop', function () {
  */
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    Route::name('dashboard-')->group(function () {
-        Route::prefix('dashboard')->group(function () {
+    Route::prefix('dashboard')->name('dashboard.')->group(function () {
 
-            Route::get('/', function () { return Inertia::render('dashboard'); })->name('home');
+        Route::get('/', function () { return Inertia::render('dashboard'); })->name('dashHome');
 
-            Route::prefix('vote-', )->group(function () {
-                Route::get('/', [VoteController::class, 'retrieve'])->name('vote');
-            });
-
-            Route::prefix('vote-website', )->group(function () {
-                Route::get('/', [VoteWebsiteController::class, 'retrieve'])->name('vote-website');
-                Route::get('/create', [VoteWebsiteController::class, 'create'])->name('vote-website-create');
-            });
-
+        Route::prefix('vote', )->group(function () {
+            Route::get('/', [VoteController::class, 'retrieve'])->name('vVote');
         });
+
+        Route::prefix('vote-website')->name('vote-website.')->group(function () {
+            Route::controller(VoteWebsiteController::class)->group(function () {
+//                    Route::get('/', 'retrieve')->name('list');
+                Route::get('/add', 'add')->name('vwAdd');
+                Route::post('/add', 'addStore')->name('vwAddStore');
+            });
+        });
+
     });
 
 });
