@@ -8,7 +8,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard_home, dashboard_vote } from '@/routes';
+import { dashboardHome, dashboardVote } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { LayoutGrid, Vote } from 'lucide-react';
@@ -17,12 +17,12 @@ import AppLogo from './app-logo';
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        href: dashboard_home(),
+        href: dashboardHome(),
         icon: LayoutGrid,
     },
   {
         title: 'Votes',
-        href: dashboard_vote(),
+        href: dashboardVote(),
         icon: Vote,
     }
 ];
@@ -34,7 +34,7 @@ export function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href={dashboard_home()} prefetch>
+                            <Link href={dashboardHome()} prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>

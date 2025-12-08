@@ -36,18 +36,18 @@ Route::get('/shop', function () {
  */
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    Route::name('dashboard_')->group(function () {
+    Route::name('dashboard-')->group(function () {
         Route::prefix('dashboard')->group(function () {
 
             Route::get('/', function () { return Inertia::render('dashboard'); })->name('home');
 
-            Route::prefix('vote', )->group(function () {
+            Route::prefix('vote-', )->group(function () {
                 Route::get('/', [VoteController::class, 'retrieve'])->name('vote');
             });
 
-            Route::prefix('vote_website', )->group(function () {
-                Route::get('/', [VoteWebsiteController::class, 'retrieve'])->name('vote_website');
-                Route::get('/create', [VoteWebsiteController::class, 'create'])->name('vote_website_create');
+            Route::prefix('vote-website', )->group(function () {
+                Route::get('/', [VoteWebsiteController::class, 'retrieve'])->name('vote-website');
+                Route::get('/create', [VoteWebsiteController::class, 'create'])->name('vote-website-create');
             });
 
         });
