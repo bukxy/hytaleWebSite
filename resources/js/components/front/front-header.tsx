@@ -29,7 +29,7 @@ import {
 import { UserMenuContent } from '@/components/front/user-menu-content';
 import { useInitials } from '@/hooks/use-initials';
 import { cn, isSameUrl, resolveUrl } from '@/lib/utils';
-import { dashboardHome } from '@/routes';
+import { dashHome } from '@/routes/dashboard';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
@@ -39,7 +39,7 @@ import FrontLogoIcon from './front-logo-icon';
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        href: dashboardHome(),
+        href: dashHome(),
         icon: LayoutGrid,
     },
 ];
@@ -140,7 +140,7 @@ export function FrontHeader({ breadcrumbs = [] }: FrontHeaderProps) {
                     </div>
 
                     <Link
-                        href={dashboardHome()}
+                        href={dashHome()}
                         prefetch
                         className="flex items-center space-x-2"
                     >
