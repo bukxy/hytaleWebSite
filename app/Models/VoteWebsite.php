@@ -12,6 +12,23 @@ class VoteWebsite extends Model
 
     protected $table = 'votes_websites';
 
+    protected $fillable = [
+        'name',
+        'url',
+        'is_enabled',
+        'verification_key',
+        'has_verification',
+        'created_by',
+        'updated_by',
+        'user_id',
+        'file_logo_id'
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
