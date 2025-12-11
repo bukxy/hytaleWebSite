@@ -7,15 +7,22 @@ import InputError from '@/components/input-error';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
-import { vwAddStore } from '@/routes/dashboard/vote-website';
+import { vwAdd, vwAddStore } from '@/routes/dashboard/vote-website';
 import { vVote } from '@/routes/dashboard';
 import { Table } from '@/components/table';
 import { useState } from 'react';
+import Heading from '@/components/heading';
+import { SeparatorVertical } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Vote',
-        href: vVote().url
+        href: vVote().url,
+    },
+    {
+        title: 'New vote website',
+        href: vwAdd().url,
     },
 ];
 
@@ -84,14 +91,12 @@ export default function Vote({ votes_websites } : { votes_websites: VoteWebsite[
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Vote" />
+            <Head title={breadcrumbs[1].title} />
 
-            <div className="flex flex-col lg:flex-row lg:space-x-12">
-                <div className="max-w-xl rounded-2xl p-8 shadow-xl xl:min-w-180">
-                    <h2 className="mb-6 text-3xl font-bold text-gray-800">
-                        New vote website
-                    </h2>
-                    <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+            <div>
+                <div className="rounded-xl border border-sidebar-border/70 p-4 dark:border-sidebar-border">
+                    <Heading title={breadcrumbs[1].title} />
+                    <div className="flex w-full flex-col lg:flex-row gap-6">
                         <Form
                             {...vwAddStore.form()}
                             resetOnSuccess={false}
@@ -102,11 +107,12 @@ export default function Vote({ votes_websites } : { votes_websites: VoteWebsite[
                                     is_enabled: false,
                                     has_verification: false,
                                     verification_key: '',
-                                    logo: null
+                                    logo: null,
                                 });
                                 setEnable(false);
                                 setVerification(false);
                             }}
+                            className="lg:min-w-125"
                         >
                             {({ processing, errors }) => (
                                 <>
@@ -254,10 +260,16 @@ export default function Vote({ votes_websites } : { votes_websites: VoteWebsite[
                                 </>
                             )}
                         </Form>
+
+                        <Separator className="lg:hidden"/>
+
+                        <div className="overflow-hidden">
+                            <Table
+                                data={votes_websites}
+                                columns={columnsVoteWebsite}
+                            />
+                        </div>
                     </div>
-                </div>
-                <div className="flex-none">
-                    <Table data={votes_websites} columns={columnsVoteWebsite} />
                 </div>
             </div>
         </AppLayout>
