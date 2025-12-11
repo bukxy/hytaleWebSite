@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,8 @@ class FileFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'filename' => $this->faker->unique()->jobTitle(),
+            'user_id' => User::factory(),
         ];
     }
 }
