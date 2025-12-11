@@ -17,13 +17,20 @@ import AppLogo from './app-logo';
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        href: dashHome().url,
         icon: LayoutGrid,
+        href: dashHome().url,
     },
     {
         title: 'Votes',
         href: vVote().url,
         icon: Vote,
+        items: [
+            {
+                title: 'List',
+                href: vVote().url,
+                icon: Vote,
+            },
+        ],
     },
 ];
 

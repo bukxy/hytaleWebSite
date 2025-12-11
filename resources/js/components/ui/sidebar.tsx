@@ -42,6 +42,9 @@ type SidebarContext = {
   isMobile: boolean
   toggleSidebar: () => void
   isFrontNav?: boolean
+
+  openMenus: Record<string, boolean>
+  toggleMenu: (key: string) => void
 }
 
 const SidebarContext = React.createContext<SidebarContext | null>(null)
@@ -71,6 +74,27 @@ function SidebarProvider({
 }) {
   const isMobile = useIsMobile()
   const [openMobile, setOpenMobile] = React.useState(false)
+
+  const [_openMenus, _setOpenMenus] = React.useState<Record<string, boolean>>(() => {
+    try {
+      const saved = localStorage.getItem("sidebar_open_menus")
+      return saved ? JSON.parse(saved) : {}
+    } catch {
+      return {}
+    }
+  })
+
+  const toggleMenu = React.useCallback((key: string) => {
+    _setOpenMenus(prev => {
+      const next = { ...prev, [key]: !prev[key] }
+      try {
+        localStorage.setItem("sidebar_open_menus", JSON.stringify(next))
+      } catch {
+        // Ignore write errors.
+      }
+      return next
+    })
+  }, [])
 
   // This is the internal state of the sidebar.
   // We use openProp and setOpenProp for control from outside the component.
@@ -115,7 +139,6 @@ function SidebarProvider({
   // We add a state so that we can do data-state="expanded" or "collapsed".
   // This makes it easier to style the sidebar with Tailwind classes.
   const state = open ? "expanded" : "collapsed"
-
   const isFrontNav = props.isFrontNav ?? false
 
   const contextValue = React.useMemo<SidebarContext>(
@@ -127,9 +150,11 @@ function SidebarProvider({
       openMobile,
       setOpenMobile,
       toggleSidebar,
-      isFrontNav
+      isFrontNav,
+      openMenus: _openMenus,
+      toggleMenu,
     }),
-    [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar, isFrontNav]
+    [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar, isFrontNav, _openMenus, toggleMenu]
   )
 
   return (
