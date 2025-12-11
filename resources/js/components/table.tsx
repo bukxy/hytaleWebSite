@@ -1,6 +1,6 @@
 import { TableColumn } from '@/types';
 import { CheckCircle, XCircle } from 'lucide-react';
-import FormattedString from '@/components/FormattedString';
+import FormattedString from '@/components/ui/FormattedString';
 
 interface TableProps<T extends object> {
     data?: T[];
