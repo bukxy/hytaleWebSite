@@ -289,7 +289,7 @@ function SidebarTrigger({
       data-slot="sidebar-trigger"
       variant="ghost"
       size="icon"
-      className={cn("h-7 w-7 z-9999 fixed pointer-events-auto", className)}
+      className={cn("h-7 w-7 bg-accent-foreground text-accent", className)}
       onClick={(event) => {
         onClick?.(event)
         toggleSidebar()
@@ -297,7 +297,7 @@ function SidebarTrigger({
       {...props}
     >
       {menuIcon}
-      <span className="sr-only">Toggle Sidebar</span>
+      <span className="sr-only ">Toggle Sidebar</span>
     </Button>
   )
 }
