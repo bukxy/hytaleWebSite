@@ -2,7 +2,6 @@ import { BreadcrumbItem, TableColumn, Vote, VoteWebsite } from '@/types';
 import AppLayout from '@/layouts/app-layout';
 import { Head, Link } from '@inertiajs/react';
 import { Table } from '@/components/table';
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import {
     Area,
     AreaChart,
@@ -14,6 +13,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { vVote } from '@/routes/dashboard';
 import { vwAdd } from '@/routes/dashboard/vote-website';
+import Heading from '@/components/heading';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -22,12 +22,12 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-const columnsVote: TableColumn<Vote>[] = [
-    {key: 'id', label: 'ID', width: 'w-10'},
-    {key: 'voter_name', label: 'Voter Name', width: 'w-56'},
-    {key: 'created_at', label: 'Voted At', width: 'w-56'},
-    {key: 'website', label: 'Website', width: 'w-56'},
-]
+// const columnsVote: TableColumn<Vote>[] = [
+//     {key: 'id', label: 'ID', width: 'w-10'},
+//     {key: 'voter_name', label: 'Voter Name', width: 'w-56'},
+//     {key: 'created_at', label: 'Voted At', width: 'w-56'},
+//     {key: 'website', label: 'Website', width: 'w-56'},
+// ]
 
 const columnsVoteWebsite: TableColumn<VoteWebsite>[] = [
     {key: 'id', label: 'ID', width: 'w-10'},
@@ -81,79 +81,71 @@ const data = [
 ];
 
 export default function VoteList({
-    votes,
+    // votes,
     votes_websites,
 }: {
-    votes: Vote[],
+    // votes: Vote[],
     votes_websites: VoteWebsite[]
 }) {
   return (
-    <AppLayout breadcrumbs={breadcrumbs}>
-        <Head title="Vote" />
-        <div className="flex h-full flex-1 flex-col rounded-xl">
-            <div className="grid auto-rows-min gap-4 md:grid-cols-1 p-4">
-                <div className="grid auto-rows-min gap-4 md:grid-cols-3 p-4 rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                    <div className={'col-span-2'}>
-                        <Button
-                            type="button"
-                            variant="outline"
-                            className="flex-1 mb-2 bg-success hover:bg-success/80"
-                        >
-                            <Link
-                                // key={item.title}
-                                href={vwAdd()}
-                                className="flex items-center space-x-2 font-medium"
-                            >
-                                <span>Add vote website</span>
-                            </Link>
-                        </Button>
+      <AppLayout breadcrumbs={breadcrumbs}>
+          <Head title="Vote" />
+          <div>
+              <div className="rounded-xl border border-sidebar-border/70 p-4 dark:border-sidebar-border">
+                  <Heading
+                      title="Vote websites"
+                      description="Informations about vote websites"
+                  />
+                  <Button
+                      type="button"
+                      variant="outline"
+                      className="flex-1 bg-primary text-accent hover:bg-primary/80 hover:text-accent"
+                  >
+                      <Link href={vwAdd().url} className="font-medium">
+                          <span>Add vote website</span>
+                      </Link>
+                  </Button>
 
-                        <Table data={votes_websites} columns={columnsVoteWebsite}/>
-                    </div>
+                  <div className="flex-col flex w-full gap-2 lg:flex-row">
+                      <AreaChart
+                          style={{
+                              position: "relative",
+                              width: '100%',
+                              maxWidth: '700px',
+                              maxHeight: '70vh',
+                              aspectRatio: 1.618,
+                          }}
+                          responsive
+                          data={data}
+                          margin={{
+                              top: 20,
+                              right: 0,
+                              left: 0,
+                              bottom: 0,
+                          }}
+                          className="md:min-w-[350px]"
+                      >
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="name" />
+                          <YAxis width="auto" />
+                          <Tooltip />
+                          <Area
+                              type="monotone"
+                              dataKey="uv"
+                              stroke="#8884d8"
+                              fill="#8884d8"
+                          />
+                      </AreaChart>
 
-                    <AreaChart
-                        style={{ width: '100%', maxWidth: '700px', maxHeight: '70vh', aspectRatio: 1.618 }}
-                        responsive
-                        data={data}
-                        margin={{
-                            top: 20,
-                            right: 0,
-                            left: 0,
-                            bottom: 0,
-                        }}
-                    >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
-                        <YAxis width="auto" />
-                        <Tooltip />
-                        <Area type="monotone" dataKey="uv" stroke="#8884d8" fill="#8884d8" />
-                    </AreaChart>
-                </div>
-
-                <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                    <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    <Table data={votes} columns={columnsVote}/>
-                </div>
-            </div>
-
-            <AreaChart
-                style={{ width: '100%', maxWidth: '700px', maxHeight: '70vh', aspectRatio: 1.618 }}
-                responsive
-                data={data}
-                margin={{
-                    top: 20,
-                    right: 0,
-                    left: 0,
-                    bottom: 0,
-                }}
-            >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis width="auto" />
-                <Tooltip />
-                <Area type="monotone" dataKey="uv" stroke="#8884d8" fill="#8884d8" />
-            </AreaChart>
-        </div>
-    </AppLayout>
-  )
+                      <div className="overflow-hidden">
+                          <Table
+                              data={votes_websites}
+                              columns={columnsVoteWebsite}
+                          />
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </AppLayout>
+  );
 }
