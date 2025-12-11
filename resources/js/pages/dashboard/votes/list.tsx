@@ -90,59 +90,57 @@ export default function VoteList({
   return (
       <AppLayout breadcrumbs={breadcrumbs}>
           <Head title="Vote" />
-          <div>
-              <div className="rounded-xl border border-sidebar-border/70 p-4 dark:border-sidebar-border">
-                  <Heading
-                      title="Vote websites"
-                      description="Informations about vote websites"
-                  />
-                  <Button
-                      type="button"
-                      variant="outline"
-                      className="flex-1 bg-primary text-accent hover:bg-primary/80 hover:text-accent"
+          <div className="rounded-xl border border-sidebar-border/70 p-4 dark:border-sidebar-border">
+              <Heading
+                  title="Vote websites"
+                  description="Informations about vote websites"
+              />
+              <Button
+                  type="button"
+                  variant="outline"
+                  className="flex-1 bg-primary text-accent hover:bg-primary/80 hover:text-accent"
+              >
+                  <Link href={vwAdd().url} className="font-medium">
+                      <span>Add vote website</span>
+                  </Link>
+              </Button>
+
+              <div className="flex-col flex w-full gap-2 lg:flex-row">
+                  <AreaChart
+                      style={{
+                          position: "relative",
+                          width: '100%',
+                          maxWidth: '700px',
+                          maxHeight: '70vh',
+                          aspectRatio: 1.618,
+                      }}
+                      responsive
+                      data={data}
+                      margin={{
+                          top: 20,
+                          right: 0,
+                          left: 0,
+                          bottom: 0,
+                      }}
+                      className="md:min-w-[350px]"
                   >
-                      <Link href={vwAdd().url} className="font-medium">
-                          <span>Add vote website</span>
-                      </Link>
-                  </Button>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis width="auto" />
+                      <Tooltip />
+                      <Area
+                          type="monotone"
+                          dataKey="uv"
+                          stroke="#8884d8"
+                          fill="#8884d8"
+                      />
+                  </AreaChart>
 
-                  <div className="flex-col flex w-full gap-2 lg:flex-row">
-                      <AreaChart
-                          style={{
-                              position: "relative",
-                              width: '100%',
-                              maxWidth: '700px',
-                              maxHeight: '70vh',
-                              aspectRatio: 1.618,
-                          }}
-                          responsive
-                          data={data}
-                          margin={{
-                              top: 20,
-                              right: 0,
-                              left: 0,
-                              bottom: 0,
-                          }}
-                          className="md:min-w-[350px]"
-                      >
-                          <CartesianGrid strokeDasharray="3 3" />
-                          <XAxis dataKey="name" />
-                          <YAxis width="auto" />
-                          <Tooltip />
-                          <Area
-                              type="monotone"
-                              dataKey="uv"
-                              stroke="#8884d8"
-                              fill="#8884d8"
-                          />
-                      </AreaChart>
-
-                      <div className="overflow-hidden">
-                          <Table
-                              data={votes_websites}
-                              columns={columnsVoteWebsite}
-                          />
-                      </div>
+                  <div className="overflow-hidden">
+                      <Table
+                          data={votes_websites}
+                          columns={columnsVoteWebsite}
+                      />
                   </div>
               </div>
           </div>
