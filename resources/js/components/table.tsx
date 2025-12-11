@@ -78,12 +78,12 @@ export function Table<T extends object>({ data = [], columns = [] }: TableProps<
                                         >
                                             {
                                                 col.type === 'date' ? (
-                                                    <FormattedString data={String((row as any)[col.key])} hms={!!col.hms} date/>
+                                                    <FormattedString data={String(row[col.key])} hms={!!col.hms} date/>
                                                 ) : col.type === 'boolean' ? (
                                                     <div className="flex items-center justify-center w-full">
-                                                        {((row as any)[col.key]) ? <CheckCircle className={'text-success'} /> : <XCircle className={'text-destructive'}/>}
+                                                        {row[col.key] ? <CheckCircle className={'text-success'} /> : <XCircle className={'text-destructive'}/>}
                                                     </div>
-                                                ) : <FormattedString data={String((row as any)[col.key])}/>
+                                                ) : <FormattedString data={String(row[col.key])}/>
                                             }
                                         </td>
                                     ))}

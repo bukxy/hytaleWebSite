@@ -65,7 +65,7 @@ export interface VoteWebsite {
 }
 
 export interface TableColumn<T> {
-    key: string | keyof T;
+    key: keyof T;
     label: string;
     width?: string;
     type?: 'date' | 'number' | 'boolean';
