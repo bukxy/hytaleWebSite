@@ -9,4 +9,11 @@ class File extends Model
 {
     /** @use HasFactory<\Database\Factories\FileFactory> */
     use HasFactory;
+
+    protected $table = 'files';
+
+    protected $fillable = [
+        'filename',
+        'user_id',
+    ];
 }
