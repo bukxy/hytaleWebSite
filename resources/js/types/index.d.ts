@@ -71,5 +71,5 @@ export interface TableColumn<T> {
     width?: string;
     type?: 'date' | 'number' | 'boolean';
     hms?: boolean; // for date type, whether to show hours, minutes, seconds
-    editHref?: (row: T) => string;
+    editHref?: NonNullable<InertiaLinkProps['href']>;
 }
