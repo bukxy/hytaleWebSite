@@ -28,9 +28,6 @@ return new class extends Migration
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->foreign('updated_by')->references('id')->on('users');
 
-            $table->unsignedBigInteger('file_logo_id')->nullable();
-            $table->foreign('file_logo_id')->references('id')->on('files')->cascadeOnDelete();
-
             $table->timestamps();
         });
     }

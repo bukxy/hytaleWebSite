@@ -20,9 +20,6 @@ return new class extends Migration
             $table->boolean('need_online')->default(false);
             $table->boolean('is_enabled')->default(true);
 
-            $table->bigInteger('file_id')->unsigned()->nullable();
-            $table->foreign('file_id')->references('id')->on('files')->cascadeOnDelete();
-
             $table->timestamps();
         });
     }
