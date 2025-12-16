@@ -12,8 +12,17 @@ class File extends Model
 
     protected $table = 'files';
 
+    const LOGO = "logo";
+
     protected $fillable = [
         'filename',
+        'path',
+        'type',
         'user_id',
     ];
+
+    public function fileable()
+    {
+        return $this->morphTo();
+    }
 }
