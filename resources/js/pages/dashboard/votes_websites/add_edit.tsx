@@ -12,7 +12,6 @@ import { vVote } from '@/routes/dashboard';
 import { Table } from '@/components/table';
 import { useState } from 'react';
 import Heading from '@/components/heading';
-import { SeparatorVertical } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
 const breadcrumbs: BreadcrumbItem[] = [
