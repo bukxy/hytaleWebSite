@@ -12,7 +12,7 @@ import {
 } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { vVote } from '@/routes/dashboard';
-import { vwAdd } from '@/routes/dashboard/vote-website';
+import { vwAdd, vwDelete } from '@/routes/dashboard/vote-website';
 import {Card, CardContent, CardDescription, CardTitle} from "@/components/ui/card";
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -32,6 +32,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 const columnsVoteWebsite: TableColumn<VoteWebsite>[] = [
     {key: 'id', label: 'ID', width: 'w-10'},
     {key: 'name', label: 'Name', width: 'w-56'},
+    {key: 'logo', label: 'Logo', width: 'w-56', type: "image"},
     {key: 'url', label: 'Url', width: 'w-56'},
     {key: 'created_at', label: 'Created at', width: 'w-32', type: 'date', hms: true},
     {key: 'created_by', label: 'Created by', width: 'w-32'},
@@ -142,8 +143,8 @@ export default function VoteList({
                               data={votes_websites}
                               columns={columnsVoteWebsite}
                               config={{
-                                  editUrl: vwAdd().url,
-                                  deleteUrl: vwAdd().url,
+                                  editUrl: vwDelete.definition.url,
+                                  deleteUrl: vwDelete.definition.url,
                               }}
                           />
                       </div>
