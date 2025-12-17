@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Vote;
 use App\Models\VoteReward;
 use App\Models\VoteWebsite;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class VoteController extends Controller
@@ -25,6 +26,7 @@ class VoteController extends Controller
                         'updated_by' => $vw->updatedBy?->name,
                         'is_enabled' => $vw->is_enabled,
                         'has_verification' => $vw->has_verification,
+                        'logo' => $vw->logo ? Storage::url($vw->logo->path) : null,
                     ];
                 }),
             'votes' => Vote::with(['user', 'voteWebsite'])
