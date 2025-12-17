@@ -49,6 +49,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 //                    Route::get('/', 'retrieve')->name('list');
                 Route::get('/add', 'add')->name('vwAdd');
                 Route::post('/add', 'addStore')->name('vwAddStore');
+                Route::delete('/delete/{id}', 'delete')->name('vwDelete');
             });
         });
 
