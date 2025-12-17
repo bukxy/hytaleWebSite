@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use App\Models\File;
+use App\Models\VoteWebsite;
 use Illuminate\Http\UploadedFile;
 
 test('vote website create page', function () {
@@ -19,6 +20,10 @@ test('vote website store', function () {
     $user = User::factory()->create();
     $filename = 'testlogo.png';
 
+    $voteWebsite = VoteWebsite::factory()->create([
+        'user_id' => $user->id,
+    ]);
+
     $response = $this
         ->actingAs($user)
         ->from(route('dashboard.vote-website.vwAdd'))
@@ -29,14 +34,15 @@ test('vote website store', function () {
         'has_verification' => true,
         'is_enabled' => true,
         'user_id' => $user->id,
-        'file_logo_id' => File::factory()->create([
+        'logo' => File::factory()->create([
             'filename' => $filename,
+            'path' => $filename,
             'user_id' => $user->id,
+            'type' => File::LOGO,
+            'fileable_id' => $voteWebsite->id,
+            'fileable_type' => VoteWebsite::class,
         ])->id
     ]);
-
-    Storage::fake('images');
-    UploadedFile::fake()->image($filename);
 
     $response
         ->assertRedirect(route('dashboard.vote-website.vwAdd'));
