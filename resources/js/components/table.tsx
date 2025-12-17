@@ -1,14 +1,15 @@
 import { TableColumn } from '@/types';
 import { CheckCircle, Pencil, Trash, XCircle } from 'lucide-react';
 import FormattedString from '@/components/ui/FormattedString';
-import {InertiaLinkProps, Link} from "@inertiajs/react";
+import { Link, router } from '@inertiajs/react';
 
 interface TableProps<T extends object> {
     data?: T[];
     columns?: TableColumn<T>[];
     config?: {
-        editUrl?: NonNullable<InertiaLinkProps['href']>;
-        deleteUrl?: NonNullable<InertiaLinkProps['href']>;
+        editUrl?: string;
+        deleteUrl?: string;
+        idKey?: keyof T;
     };
 }
 
@@ -17,6 +18,9 @@ export function Table<T extends object>({
                                             columns = [],
                                             config
 }: TableProps<T>) {
+
+    const configEdit = config?.editUrl;
+    const configDelete = config?.deleteUrl;
 
     return (
         <>
@@ -52,30 +56,42 @@ export function Table<T extends object>({
 
                                     return (
                                         <tr key={rowIndex}>
-                                            {(config?.deleteUrl ||
-                                                config?.editUrl) && (
+                                            {(configDelete || configEdit) && (
                                                 <td
                                                     key="edit"
                                                     className="border-b border-gray-500 px-6 py-4 text-center text-sm leading-5 whitespace-nowrap text-blue-900"
                                                 >
                                                     <div className="flex justify-center gap-4">
-                                                        {config?.editUrl && (
+                                                        {configEdit && (
                                                             <Link
-                                                                href={
-                                                                    `${config.editUrl}/${keyValue}`
-                                                                }
+                                                                href={configEdit.replace(
+                                                                    '{id}',
+                                                                    String(
+                                                                        keyValue,
+                                                                    ),
+                                                                )}
                                                             >
                                                                 <Pencil className="text-success" />
                                                             </Link>
                                                         )}
-                                                        {config?.deleteUrl && (
-                                                            <Link
-                                                                href={
-                                                                    `${config.deleteUrl}/${keyValue}`
-                                                                }
+                                                        {configDelete && (
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    if (confirm('Are you sure ?')) {
+                                                                        router.delete(
+                                                                            configDelete.replace(
+                                                                                '{id}',
+                                                                                String(
+                                                                                    keyValue,
+                                                                                ),
+                                                                            ),
+                                                                        );
+                                                                    }
+                                                                }}
                                                             >
-                                                                <Trash className="text-destructive" />
-                                                            </Link>
+                                                                <Trash className="cursor-pointer text-destructive" />
+                                                            </button>
                                                         )}
                                                     </div>
                                                 </td>
@@ -106,6 +122,28 @@ export function Table<T extends object>({
                                                                 <XCircle
                                                                     className={
                                                                         'text-destructive'
+                                                                    }
+                                                                />
+                                                            )}
+                                                        </div>
+                                                    ) : col.type === 'image' ? (
+                                                        <div className="flex w-full items-center justify-center">
+                                                            {row[col.key] && (
+                                                                <img
+                                                                    alt={String(
+                                                                        row[
+                                                                            col
+                                                                                .key
+                                                                        ],
+                                                                    )}
+                                                                    src={String(
+                                                                        row[
+                                                                            col
+                                                                                .key
+                                                                        ],
+                                                                    )}
+                                                                    className={
+                                                                        'h-8 w-8 rounded-full'
                                                                     }
                                                                 />
                                                             )}
