@@ -69,7 +69,7 @@ export interface TableColumn<T> {
     key: keyof T;
     label: string;
     width?: string;
-    type?: 'date' | 'number' | 'boolean';
+    type?: 'date' | 'number' | 'boolean' | 'image';
     hms?: boolean; // for date type, whether to show hours, minutes, seconds
     editHref?: NonNullable<InertiaLinkProps['href']>;
 }
