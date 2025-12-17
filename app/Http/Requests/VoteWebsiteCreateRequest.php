@@ -3,7 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\File;
 
 class VoteWebsiteCreateRequest extends FormRequest
 {
@@ -14,8 +16,8 @@ class VoteWebsiteCreateRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'user_id' => $this->user()->id,
-            'created_by' => $this->user()->id,
+            'user_id' => Auth::id(),
+            'created_by' => Auth::id(),
             'is_enabled' => $this->has('is_enabled'),
             'has_verification' => $this->has('has_verification')
         ]);
@@ -36,7 +38,12 @@ class VoteWebsiteCreateRequest extends FormRequest
             'has_verification' => ['required', 'boolean'],
             'created_by' => ['required', Rule::exists('users', 'id')],
             'user_id' => ['required', Rule::exists('users', 'id')],
-            'file_logo_id' => [Rule::exists('files', 'id')]
+            'logo' => [
+                File::image()
+                    ->min(15)
+                    ->max(100 * 1024)
+                    ->dimensions(Rule::dimensions()->maxWidth(1000)->maxHeight(500)),
+            ]
         ];
     }
 }
