@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class VoteWebsite extends Model
 {
-    /** @use HasFactory<\Database\Factories\VotesWebsitesFactory> */
+    /** @use HasFactory<\Database\Factories\VoteWebsiteFactory> */
     use HasFactory;
 
     protected $table = 'votes_websites';
@@ -20,9 +21,18 @@ class VoteWebsite extends Model
         'has_verification',
         'created_by',
         'updated_by',
-        'user_id',
-        'file_logo_id'
+        'user_id'
     ];
+
+    protected static function booted()
+    {
+        static::deleting(function ($voteWebsite) {
+            if ($voteWebsite->logo) {
+                Storage::disk('public')->delete($voteWebsite->logo->path);
+                $voteWebsite->logo->delete();
+            }
+        });
+    }
 
     public function user()
     {
@@ -37,5 +47,10 @@ class VoteWebsite extends Model
     public function updatedBy()
     {
         return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    public function logo() {
+        return $this->morphOne(File::class, 'fileable')
+            ->where('type', '=',File::LOGO);
     }
 }
