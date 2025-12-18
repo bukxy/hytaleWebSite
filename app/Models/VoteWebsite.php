@@ -24,6 +24,11 @@ class VoteWebsite extends Model
         'user_id'
     ];
 
+    protected $casts = [
+        'is_enabled' => 'boolean',
+        'has_verification' => 'boolean',
+    ];
+
     protected static function booted()
     {
         static::deleting(function ($voteWebsite) {
