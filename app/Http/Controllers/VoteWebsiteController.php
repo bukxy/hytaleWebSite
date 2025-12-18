@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\VoteWebsiteCreateRequest;
+use App\Http\Requests\VoteWebsiteCreateEditRequest;
 use App\Http\Resources\VoteWebsiteResource;
 use App\Models\File;
 use App\Models\VoteWebsite;
@@ -41,7 +41,7 @@ class VoteWebsiteController extends Controller
         ]);
     }
 
-    public function addStore(VoteWebsiteCreateRequest $request): RedirectResponse
+    public function addStore(VoteWebsiteCreateEditRequest $request): RedirectResponse
     {
 
         $errors = new MessageBag();
@@ -128,7 +128,7 @@ class VoteWebsiteController extends Controller
         ]);
     }
 
-    public function editStore(VoteWebsiteCreateRequest $request, int $id): RedirectResponse
+    public function editStore(VoteWebsiteCreateEditRequest $request, int $id): RedirectResponse
     {
 
         $voteWebsite = VoteWebsite::findOrFail($id);

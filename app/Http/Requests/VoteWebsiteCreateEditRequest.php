@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
 
-class VoteWebsiteCreateRequest extends FormRequest
+class VoteWebsiteCreateEditRequest extends FormRequest
 {
 
     /**
@@ -18,8 +18,6 @@ class VoteWebsiteCreateRequest extends FormRequest
         $this->merge([
             'user_id' => Auth::id(),
             'created_by' => Auth::id(),
-            'is_enabled' => $this->has('is_enabled'),
-            'has_verification' => $this->has('has_verification')
         ]);
     }
 
@@ -30,8 +28,10 @@ class VoteWebsiteCreateRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('id');
+
         return [
-            'name' => ['required', 'string', 'min:1', 'max:255', Rule::unique('votes_websites', 'name')],
+            'name' => ['required', 'string', 'min:1', 'max:255', Rule::unique('votes_websites', 'name')->ignore($id)],
             'url' => ['required', 'string', 'lowercase', 'min:3', 'max:255'],
             'is_enabled' => ['required', 'boolean'],
             'verification_key' => ['string', 'max:255'],
