@@ -2,11 +2,12 @@ import { Table } from '@/components/table';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
-import vote from '@/routes/dashboard/vote';
+import vote from '@/routes/dashboard/vote/index';
 import voteWebsite from '@/routes/dashboard/vote-website';
-import { BreadcrumbItem, TableColumn, VoteWebsite } from '@/types';
+import { BreadcrumbItem, TableColumn } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { Area, AreaChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts';
+import {VoteWebsite} from "@/types/vote-website";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -129,7 +130,7 @@ export default function VoteList({
                                 data={votes_websites}
                                 columns={columnsVoteWebsite}
                                 config={{
-                                    editUrl: voteWebsite.delete.definition.url,
+                                    editUrl: voteWebsite.edit.definition.url,
                                     deleteUrl: voteWebsite.delete.definition.url,
                                 }}
                             />
