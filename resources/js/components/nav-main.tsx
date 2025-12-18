@@ -17,11 +17,7 @@ function SidebarCollapsibleItem({ item }: { item: NavItem }) {
     const { openMenus, toggleMenu } = useSidebar();
     const hasSub = !!item.items;
 
-    const isSubActive =
-        hasSub &&
-        item.items!.some(
-            (sub) => sub.href && page.url === resolveUrl(sub.href.toString()),
-        );
+    const isSubActive = hasSub && item.items!.some((sub) => sub.href && page.url === resolveUrl(sub.href.toString()));
 
     const isOpen = openMenus[item.title] ?? isSubActive;
 
@@ -36,21 +32,13 @@ function SidebarCollapsibleItem({ item }: { item: NavItem }) {
 
     return (
         <SidebarMenuItem>
-            <SidebarMenuButton
-                asChild
-                isActive={isActive}
-                tooltip={{ children: item.title }}
-                onClick={handleClick}
-            >
+            <SidebarMenuButton asChild isActive={isActive} tooltip={{ children: item.title }} onClick={handleClick}>
                 {hasSub ? (
                     <div className="flex items-center gap-2">
                         {item.icon && <item.icon />}
                         <span>{item.title}</span>
                         <ChevronRight
-                            className={cn(
-                                'ml-auto transition-transform duration-200',
-                                isOpen && 'rotate-90',
-                            )}
+                            className={cn('ml-auto transition-transform duration-200', isOpen && 'rotate-90')}
                         />
                     </div>
                 ) : (
@@ -64,15 +52,10 @@ function SidebarCollapsibleItem({ item }: { item: NavItem }) {
             {hasSub && isOpen && (
                 <SidebarMenuSub>
                     {item.items!.map((sub) => (
-                        <SidebarMenuSubItem
-                            key={sub.href?.toString() ?? sub.title}
-                        >
+                        <SidebarMenuSubItem key={sub.href?.toString() ?? sub.title}>
                             <SidebarMenuSubButton
                                 href={sub.href?.toString()}
-                                isActive={
-                                    !!sub.href &&
-                                    page.url === resolveUrl(sub.href.toString())
-                                }
+                                isActive={!!sub.href && page.url === resolveUrl(sub.href.toString())}
                             >
                                 {item.icon && <item.icon />}
                                 {sub.title}

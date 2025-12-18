@@ -1,9 +1,9 @@
 import { FrontContent } from '@/components/front/front-content';
 import { FrontShell } from '@/components/front/front-shell';
+import { FrontSidebar } from '@/components/front/front-sidebar';
 import { FrontSidebarHeader } from '@/components/front/front-sidebar-header';
 import { type BreadcrumbItem } from '@/types';
 import { type PropsWithChildren } from 'react';
-import { FrontSidebar } from '@/components/front/front-sidebar';
 
 export default function AppFrontSidebarLayout({
     children,

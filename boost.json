@@ -1,9 +1,5 @@
 {
-    "agents": [
-        "phpstorm"
-    ],
-    "editors": [
-        "phpstorm"
-    ],
+    "agents": ["phpstorm"],
+    "editors": ["phpstorm"],
     "guidelines": []
 }

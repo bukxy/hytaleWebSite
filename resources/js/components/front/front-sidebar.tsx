@@ -1,17 +1,8 @@
 import { NavMain } from '@/components/front/nav-main';
-import {
-    Sidebar,
-    SidebarContent,
-} from '@/components/ui/sidebar';
+import { Sidebar, SidebarContent } from '@/components/ui/sidebar';
 import { home, shop, stats, vote, wiki } from '@/routes';
 import { type NavItem } from '@/types';
-import {
-    BookOpenText,
-    ChartNoAxesCombined,
-    House,
-    Store,
-    Vote,
-} from 'lucide-react';
+import { BookOpenText, ChartNoAxesCombined, House, Store, Vote } from 'lucide-react';
 
 const mainNavItems: NavItem[] = [
     {
