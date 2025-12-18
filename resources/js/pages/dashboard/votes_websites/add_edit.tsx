@@ -1,27 +1,27 @@
-import  { BreadcrumbItem, TableColumn, VoteWebsite } from '@/types';
-import AppLayout from '@/layouts/app-layout';
-import { Form, Head } from '@inertiajs/react';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import InputError from '@/components/input-error';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Button } from '@/components/ui/button';
-import { Spinner } from '@/components/ui/spinner';
-import { vwAdd, vwAddStore } from '@/routes/dashboard/vote-website';
-import { vVote } from '@/routes/dashboard';
-import { Table } from '@/components/table';
-import { useState } from 'react';
 import Heading from '@/components/heading';
+import InputError from '@/components/input-error';
+import { Table } from '@/components/table';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { Spinner } from '@/components/ui/spinner';
+import AppLayout from '@/layouts/app-layout';
+import vote from '@/routes/dashboard/vote';
+import voteWebsite from '@/routes/dashboard/vote-website';
+import { BreadcrumbItem, TableColumn, VoteWebsite } from '@/types';
+import { Form, Head } from '@inertiajs/react';
+import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Vote',
-        href: vVote().url,
+        href: vote.list().url,
     },
     {
         title: 'New vote website',
-        href: vwAdd().url,
+        href: voteWebsite.add().url,
     },
 ];
 
@@ -54,8 +54,7 @@ const columnsVoteWebsite: TableColumn<VoteWebsite>[] = [
     },
 ];
 
-export default function Vote({ votes_websites } : { votes_websites: VoteWebsite[] }) {
-
+export default function Vote({ votes_websites }: { votes_websites: VoteWebsite[] }) {
     const [formData, setFormData] = useState<{
         name: string;
         url: string;
@@ -76,12 +75,7 @@ export default function Vote({ votes_websites } : { votes_websites: VoteWebsite[
         const { name, value, type, checked, files } = e.target;
         setFormData((prev) => ({
             ...prev,
-            [name]:
-                type === 'checkbox'
-                    ? checked
-                    : type === 'file'
-                      ? files && files[0]
-                      : value,
+            [name]: type === 'checkbox' ? checked : type === 'file' ? files && files[0] : value,
         }));
     };
 
@@ -95,9 +89,9 @@ export default function Vote({ votes_websites } : { votes_websites: VoteWebsite[
             <div>
                 <div className="rounded-xl border border-sidebar-border/70 p-4 dark:border-sidebar-border">
                     <Heading title={breadcrumbs[1].title} />
-                    <div className="flex w-full flex-col lg:flex-row gap-6">
+                    <div className="flex w-full flex-col gap-6 lg:flex-row">
                         <Form
-                            {...vwAddStore.form()}
+                            {...voteWebsite.addStore.form()}
                             resetOnSuccess={false}
                             onSuccess={() => {
                                 setFormData({
@@ -116,9 +110,7 @@ export default function Vote({ votes_websites } : { votes_websites: VoteWebsite[
                             {({ processing, errors }) => (
                                 <>
                                     <div className="mb-3 grid gap-2">
-                                        <Label htmlFor="name">
-                                            Website name
-                                        </Label>
+                                        <Label htmlFor="name">Website name</Label>
                                         <Input
                                             id="name"
                                             type="text"
@@ -155,9 +147,7 @@ export default function Vote({ votes_websites } : { votes_websites: VoteWebsite[
                                     <div className="col-span-2 col-start-3 grid grid-cols-2 gap-2">
                                         <div className="col-span-1 text-center">
                                             <div>
-                                                <Label htmlFor="enable">
-                                                    Active
-                                                </Label>
+                                                <Label htmlFor="enable">Active</Label>
                                             </div>
                                             <Checkbox
                                                 id="enable"
@@ -172,16 +162,12 @@ export default function Vote({ votes_websites } : { votes_websites: VoteWebsite[
                                                     });
                                                 }}
                                             />
-                                            <InputError
-                                                message={errors.enable}
-                                            />
+                                            <InputError message={errors.enable} />
                                         </div>
 
                                         <div className="col-span-1 text-center">
                                             <div>
-                                                <Label htmlFor="verification">
-                                                    Verification
-                                                </Label>
+                                                <Label htmlFor="verification">Verification</Label>
                                             </div>
                                             <Checkbox
                                                 id="verification"
@@ -196,37 +182,27 @@ export default function Vote({ votes_websites } : { votes_websites: VoteWebsite[
                                                     });
                                                 }}
                                             />
-                                            <InputError
-                                                message={errors.verification}
-                                            />
+                                            <InputError message={errors.verification} />
                                         </div>
                                     </div>
 
                                     {verification && (
                                         <div className="col-span-2 col-start-3 mb-3 grid gap-2">
                                             <div className="flex items-center">
-                                                <Label htmlFor="verification_key">
-                                                    Verification Key
-                                                </Label>
+                                                <Label htmlFor="verification_key">Verification Key</Label>
                                             </div>
                                             <Input
                                                 id="verification_key"
                                                 type="text"
                                                 name="verification_key"
-                                                value={
-                                                    formData.verification_key
-                                                }
+                                                value={formData.verification_key}
                                                 onChange={handleChange}
                                                 required
                                                 tabIndex={5}
                                                 autoComplete="verification_key"
                                                 placeholder="toKen12345"
                                             />
-                                            <InputError
-                                                message={
-                                                    errors.verification_key
-                                                }
-                                            />
+                                            <InputError message={errors.verification_key} />
                                         </div>
                                     )}
 
@@ -260,13 +236,10 @@ export default function Vote({ votes_websites } : { votes_websites: VoteWebsite[
                             )}
                         </Form>
 
-                        <Separator className="lg:hidden"/>
+                        <Separator className="lg:hidden" />
 
                         <div className="overflow-hidden">
-                            <Table
-                                data={votes_websites}
-                                columns={columnsVoteWebsite}
-                            />
+                            <Table data={votes_websites} columns={columnsVoteWebsite} />
                         </div>
                     </div>
                 </div>

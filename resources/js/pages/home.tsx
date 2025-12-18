@@ -1,24 +1,17 @@
+import AppFrontLayout from '@/layouts/app-front-layout';
 import { login, register } from '@/routes';
+import dashboard from '@/routes/dashboard';
 import { type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
-import AppFrontLayout from '@/layouts/app-front-layout';
-import { dashHome } from '@/routes/dashboard';
 
-export default function Home({
-    canRegister = true,
-}: {
-    canRegister?: boolean;
-}) {
+export default function Home({ canRegister = true }: { canRegister?: boolean }) {
     const { auth } = usePage<SharedData>().props;
 
     return (
         <>
             <Head title="Home">
                 <link rel="preconnect" href="https://fonts.bunny.net" />
-                <link
-                    href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600"
-                    rel="stylesheet"
-                />
+                <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
             <AppFrontLayout>
                 <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
@@ -26,7 +19,7 @@ export default function Home({
                         <nav className="flex items-center justify-end gap-4">
                             {auth.user ? (
                                 <Link
-                                    href={dashHome()}
+                                    href={dashboard.home().url}
                                     className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
                                 >
                                     Dashboard
