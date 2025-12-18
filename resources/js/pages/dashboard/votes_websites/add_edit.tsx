@@ -10,9 +10,11 @@ import { Spinner } from '@/components/ui/spinner';
 import AppLayout from '@/layouts/app-layout';
 import vote from '@/routes/dashboard/vote';
 import voteWebsite from '@/routes/dashboard/vote-website';
-import { BreadcrumbItem, TableColumn, VoteWebsite } from '@/types';
-import { Form, Head } from '@inertiajs/react';
+import { BreadcrumbItem, TableColumn } from '@/types';
+import { Form, Head, router } from '@inertiajs/react';
 import { useState } from 'react';
+import { VoteWebsite, VoteWebsiteForm } from '@/types/vote-website';
+import {Trash} from "lucide-react";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -54,22 +56,20 @@ const columnsVoteWebsite: TableColumn<VoteWebsite>[] = [
     },
 ];
 
-export default function Vote({ votes_websites }: { votes_websites: VoteWebsite[] }) {
-    const [formData, setFormData] = useState<{
-        name: string;
-        url: string;
-        is_enabled: boolean;
-        has_verification: boolean;
-        verification_key: string;
-        logo: File | null;
-    }>({
-        name: '',
-        url: '',
-        is_enabled: false,
-        has_verification: false,
-        verification_key: '',
+export default function Vote({ data, votes_websites }: { data: VoteWebsite | null; votes_websites: VoteWebsite[] }) {
+
+    const initData = (data?: VoteWebsite): VoteWebsiteForm => ({
+        name: data?.name ?? '',
+        url: data?.url ?? '',
+        is_enabled: data?.is_enabled ?? false,
+        has_verification: data?.has_verification ?? false,
+        verification_key: data?.verification_key ?? '',
         logo: null,
     });
+
+    const [formData, setFormData] = useState<VoteWebsiteForm>(() => initData(data ?? undefined));
+
+    console.log(formData);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type, checked, files } = e.target;
@@ -79,8 +79,8 @@ export default function Vote({ votes_websites }: { votes_websites: VoteWebsite[]
         }));
     };
 
-    const [verification, setVerification] = useState(false);
-    const [enable, setEnable] = useState(false);
+    const formConfig =
+        data?.id !== undefined ? voteWebsite.editStore.form({ id: data.id }) : voteWebsite.addStore.form();
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -91,19 +91,19 @@ export default function Vote({ votes_websites }: { votes_websites: VoteWebsite[]
                     <Heading title={breadcrumbs[1].title} />
                     <div className="flex w-full flex-col gap-6 lg:flex-row">
                         <Form
-                            {...voteWebsite.addStore.form()}
+                            {...formConfig}
                             resetOnSuccess={false}
                             onSuccess={() => {
-                                setFormData({
-                                    name: '',
-                                    url: '',
-                                    is_enabled: false,
-                                    has_verification: false,
-                                    verification_key: '',
-                                    logo: null,
-                                });
-                                setEnable(false);
-                                setVerification(false);
+                                if (!data?.id) {
+                                    setFormData({
+                                        name: '',
+                                        url: '',
+                                        is_enabled: false,
+                                        has_verification: false,
+                                        verification_key: '',
+                                        logo: null,
+                                    });
+                                }
                             }}
                             className="lg:min-w-125"
                         >
@@ -151,16 +151,19 @@ export default function Vote({ votes_websites }: { votes_websites: VoteWebsite[]
                                             </div>
                                             <Checkbox
                                                 id="enable"
-                                                name="is_enabled"
-                                                checked={enable}
+                                                checked={formData.is_enabled}
                                                 tabIndex={3}
                                                 onCheckedChange={(v) => {
-                                                    setEnable(!!v);
-                                                    setFormData({
-                                                        ...formData,
-                                                        is_enabled: !!v,
-                                                    });
+                                                    setFormData((prev) => ({
+                                                        ...prev,
+                                                        is_enabled: v === true,
+                                                    }));
                                                 }}
+                                            />
+                                            <input
+                                                type="hidden"
+                                                name="is_enabled"
+                                                value={formData.is_enabled ? '1' : '0'}
                                             />
                                             <InputError message={errors.enable} />
                                         </div>
@@ -171,22 +174,25 @@ export default function Vote({ votes_websites }: { votes_websites: VoteWebsite[]
                                             </div>
                                             <Checkbox
                                                 id="verification"
-                                                name="has_verification"
-                                                checked={verification}
+                                                checked={formData.has_verification}
                                                 tabIndex={4}
                                                 onCheckedChange={(v) => {
-                                                    setVerification(!!v);
-                                                    setFormData({
-                                                        ...formData,
-                                                        has_verification: !!v,
-                                                    });
+                                                    setFormData((prev) => ({
+                                                        ...prev,
+                                                        has_verification: v == true,
+                                                    }));
                                                 }}
+                                            />
+                                            <input
+                                                type="hidden"
+                                                name="has_verification"
+                                                value={formData.has_verification ? '1' : '0'}
                                             />
                                             <InputError message={errors.verification} />
                                         </div>
                                     </div>
 
-                                    {verification && (
+                                    {Boolean(formData.has_verification) && (
                                         <div className="col-span-2 col-start-3 mb-3 grid gap-2">
                                             <div className="flex items-center">
                                                 <Label htmlFor="verification_key">Verification Key</Label>
@@ -195,7 +201,7 @@ export default function Vote({ votes_websites }: { votes_websites: VoteWebsite[]
                                                 id="verification_key"
                                                 type="text"
                                                 name="verification_key"
-                                                value={formData.verification_key}
+                                                value={formData.verification_key ?? ''}
                                                 onChange={handleChange}
                                                 required
                                                 tabIndex={5}
@@ -220,6 +226,30 @@ export default function Vote({ votes_websites }: { votes_websites: VoteWebsite[]
                                             autoComplete="logo"
                                         />
                                         <InputError message={errors.logo} />
+                                        {data?.logo && (
+                                            <div className="grid w-full grid-cols-2 items-center justify-center">
+                                                <div className="me-5 flex justify-center">
+                                                    <span className={`me-5`}>Actual logo :</span>
+                                                    {/*<button*/}
+                                                    {/*    type="button"*/}
+                                                    {/*    onClick={() => {*/}
+                                                    {/*        if (confirm('Are you sure to delete the logo ?')) {*/}
+                                                    {/*            router.delete(*/}
+                                                    {/*                configDelete.replace('{id}', String(keyValue)),*/}
+                                                    {/*            );*/}
+                                                    {/*        }*/}
+                                                    {/*    }}*/}
+                                                    {/*>*/}
+                                                    {/*    <Trash className="cursor-pointer text-destructive" />*/}
+                                                    {/*</button>*/}
+                                                </div>
+                                                <img
+                                                    alt={String(data.logo.path)}
+                                                    src={String(data.logo.path)}
+                                                    className={'m-auto h-16 w-16 rounded-full'}
+                                                />
+                                            </div>
+                                        )}
                                     </div>
 
                                     <Button
@@ -230,7 +260,7 @@ export default function Vote({ votes_websites }: { votes_websites: VoteWebsite[]
                                         data-test="create-vote-website-button"
                                     >
                                         {processing && <Spinner />}
-                                        CREATE
+                                        {data?.id ? 'S A V E' : 'C R E A T E'}
                                     </Button>
                                 </>
                             )}
