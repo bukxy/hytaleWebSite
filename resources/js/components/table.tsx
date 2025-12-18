@@ -1,7 +1,7 @@
-import { TableColumn } from '@/types';
-import { CheckCircle, Pencil, Trash, XCircle } from 'lucide-react';
 import FormattedString from '@/components/ui/FormattedString';
+import { TableColumn } from '@/types';
 import { Link, router } from '@inertiajs/react';
+import { CheckCircle, Pencil, Trash, XCircle } from 'lucide-react';
 
 interface TableProps<T extends object> {
     data?: T[];
@@ -13,12 +13,7 @@ interface TableProps<T extends object> {
     };
 }
 
-export function Table<T extends object>({
-                                            data = [],
-                                            columns = [],
-                                            config
-}: TableProps<T>) {
-
+export function Table<T extends object>({ data = [], columns = [], config }: TableProps<T>) {
     const configEdit = config?.editUrl;
     const configDelete = config?.deleteUrl;
 
@@ -63,14 +58,7 @@ export function Table<T extends object>({
                                                 >
                                                     <div className="flex justify-center gap-4">
                                                         {configEdit && (
-                                                            <Link
-                                                                href={configEdit.replace(
-                                                                    '{id}',
-                                                                    String(
-                                                                        keyValue,
-                                                                    ),
-                                                                )}
-                                                            >
+                                                            <Link href={configEdit.replace('{id}', String(keyValue))}>
                                                                 <Pencil className="text-success" />
                                                             </Link>
                                                         )}
@@ -82,9 +70,7 @@ export function Table<T extends object>({
                                                                         router.delete(
                                                                             configDelete.replace(
                                                                                 '{id}',
-                                                                                String(
-                                                                                    keyValue,
-                                                                                ),
+                                                                                String(keyValue),
                                                                             ),
                                                                         );
                                                                     }
@@ -103,57 +89,38 @@ export function Table<T extends object>({
                                                 >
                                                     {col.type === 'date' ? (
                                                         <FormattedString
-                                                            data={String(
-                                                                row[col.key],
-                                                            )}
+                                                            data={String(row[col.key])}
                                                             hms={!!col.hms}
                                                             date
                                                         />
-                                                    ) : col.type ===
-                                                      'boolean' ? (
+                                                    ) : col.type === 'boolean' ? (
                                                         <div className="flex w-full items-center justify-center">
                                                             {row[col.key] ? (
-                                                                <CheckCircle
-                                                                    className={
-                                                                        'text-success'
-                                                                    }
-                                                                />
+                                                                <CheckCircle className={'text-success'} />
                                                             ) : (
-                                                                <XCircle
-                                                                    className={
-                                                                        'text-destructive'
-                                                                    }
-                                                                />
+                                                                <XCircle className={'text-destructive'} />
                                                             )}
                                                         </div>
                                                     ) : col.type === 'image' ? (
                                                         <div className="flex w-full items-center justify-center">
                                                             {row[col.key] && (
                                                                 <img
-                                                                    alt={String(
-                                                                        row[
-                                                                            col
-                                                                                .key
-                                                                        ],
-                                                                    )}
-                                                                    src={String(
-                                                                        row[
-                                                                            col
-                                                                                .key
-                                                                        ],
-                                                                    )}
-                                                                    className={
-                                                                        'h-8 w-8 rounded-full'
-                                                                    }
+                                                                    alt={String(row[col.key])}
+                                                                    src={String(row[col.key])}
+                                                                    className={'h-8 w-8 rounded-full'}
                                                                 />
                                                             )}
                                                         </div>
+                                                    ) : col.type === 'link' ? (
+                                                        <a
+                                                            href={String(row[col.key])}
+                                                            target="_blank"
+                                                            className={`italic`}
+                                                        >
+                                                            {String(row[col.key])}
+                                                        </a>
                                                     ) : (
-                                                        <FormattedString
-                                                            data={String(
-                                                                row[col.key],
-                                                            )}
-                                                        />
+                                                        <FormattedString data={String(row[col.key])} />
                                                     )}
                                                 </td>
                                             ))}

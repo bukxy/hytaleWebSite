@@ -1,24 +1,17 @@
-import { BreadcrumbItem, TableColumn, Vote, VoteWebsite } from '@/types';
-import AppLayout from '@/layouts/app-layout';
-import { Head, Link } from '@inertiajs/react';
 import { Table } from '@/components/table';
-import {
-    Area,
-    AreaChart,
-    CartesianGrid,
-    Tooltip,
-    XAxis,
-    YAxis,
-} from 'recharts';
 import { Button } from '@/components/ui/button';
-import { vVote } from '@/routes/dashboard';
-import { vwAdd, vwDelete } from '@/routes/dashboard/vote-website';
-import {Card, CardContent, CardDescription, CardTitle} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
+import AppLayout from '@/layouts/app-layout';
+import vote from '@/routes/dashboard/vote';
+import voteWebsite from '@/routes/dashboard/vote-website';
+import { BreadcrumbItem, TableColumn, VoteWebsite } from '@/types';
+import { Head, Link } from '@inertiajs/react';
+import { Area, AreaChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Vote',
-        href: vVote().url,
+        href: vote.list().url,
     },
 ];
 
@@ -30,17 +23,17 @@ const breadcrumbs: BreadcrumbItem[] = [
 // ]
 
 const columnsVoteWebsite: TableColumn<VoteWebsite>[] = [
-    {key: 'id', label: 'ID', width: 'w-10'},
-    {key: 'name', label: 'Name', width: 'w-56'},
-    {key: 'logo', label: 'Logo', width: 'w-56', type: "image"},
-    {key: 'url', label: 'Url', width: 'w-56'},
-    {key: 'created_at', label: 'Created at', width: 'w-32', type: 'date', hms: true},
-    {key: 'created_by', label: 'Created by', width: 'w-32'},
-    {key: 'updated_at', label: 'Updated at', width: 'w-32', type: 'date', hms: true},
-    {key: 'updated_by', label: 'Updated by', width: 'w-32'},
-    {key: 'is_enabled', label: 'Is active', width: 'w-10', type: 'boolean'},
-    {key: 'has_verification', label: 'Has verification', width: 'w-10', type: 'boolean'},
-]
+    { key: 'id', label: 'ID', width: 'w-10' },
+    { key: 'name', label: 'Name', width: 'w-56' },
+    { key: 'logo', label: 'Logo', width: 'w-56', type: 'image' },
+    { key: 'url', label: 'Url', width: 'w-56', type: 'link' },
+    { key: 'created_at', label: 'Created at', width: 'w-32', type: 'date', hms: true },
+    { key: 'created_by', label: 'Created by', width: 'w-32' },
+    { key: 'updated_at', label: 'Updated at', width: 'w-32', type: 'date', hms: true },
+    { key: 'updated_by', label: 'Updated by', width: 'w-32' },
+    { key: 'is_enabled', label: 'Is active', width: 'w-10', type: 'boolean' },
+    { key: 'has_verification', label: 'Has verification', width: 'w-10', type: 'boolean' },
+];
 
 const data = [
     {
@@ -86,71 +79,64 @@ export default function VoteList({
     votes_websites,
 }: {
     // votes: Vote[],
-    votes_websites: VoteWebsite[]
+    votes_websites: VoteWebsite[];
 }) {
-  return (
-      <AppLayout breadcrumbs={breadcrumbs}>
-          <Head title="Vote" />
-          <Card className="m-4">
-              <CardContent>
-                  <CardTitle>Vote websites</CardTitle>
-                  <CardDescription>
-                      Informations about vote websites
-                  </CardDescription>
-                  <Button
-                      type="button"
-                      variant="outline"
-                      className="flex-1 bg-primary text-accent hover:bg-primary/80 hover:text-accent"
-                  >
-                      <Link href={vwAdd().url} className="font-medium">
-                          <span>Add vote website</span>
-                      </Link>
-                  </Button>
+    return (
+        <AppLayout breadcrumbs={breadcrumbs}>
+            <Head title="Vote" />
+            <Card className="m-4">
+                <CardContent>
+                    <CardTitle>Vote websites</CardTitle>
+                    <CardDescription>Informations about vote websites</CardDescription>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        className="flex-1 bg-primary text-accent hover:bg-primary/80 hover:text-accent"
+                    >
+                        <Link href={voteWebsite.add().url} className="font-medium">
+                            <span>Add vote website</span>
+                        </Link>
+                    </Button>
 
-                  <div className="flex w-full flex-col gap-2 lg:flex-row">
-                      <AreaChart
-                          style={{
-                              position: 'relative',
-                              width: '100%',
-                              maxWidth: '700px',
-                              maxHeight: '70vh',
-                              aspectRatio: 1.618,
-                          }}
-                          responsive
-                          data={data}
-                          margin={{
-                              top: 20,
-                              right: 0,
-                              left: 0,
-                              bottom: 0,
-                          }}
-                          className="md:min-w-[350px]"
-                      >
-                          <CartesianGrid strokeDasharray="3 3" />
-                          <XAxis dataKey="name" />
-                          <YAxis width="auto" />
-                          <Tooltip />
-                          <Area
-                              type="monotone"
-                              dataKey="uv"
-                              stroke="#8884d8"
-                              fill="#8884d8"
-                          />
-                      </AreaChart>
+                    <div className="flex w-full flex-col gap-2 lg:flex-row">
+                        <AreaChart
+                            style={{
+                                position: 'relative',
+                                width: '100%',
+                                maxWidth: '700px',
+                                maxHeight: '70vh',
+                                aspectRatio: 1.618,
+                            }}
+                            responsive
+                            data={data}
+                            margin={{
+                                top: 20,
+                                right: 0,
+                                left: 0,
+                                bottom: 0,
+                            }}
+                            className="md:min-w-[350px]"
+                        >
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="name" />
+                            <YAxis width="auto" />
+                            <Tooltip />
+                            <Area type="monotone" dataKey="uv" stroke="#8884d8" fill="#8884d8" />
+                        </AreaChart>
 
-                      <div className="overflow-hidden">
-                          <Table
-                              data={votes_websites}
-                              columns={columnsVoteWebsite}
-                              config={{
-                                  editUrl: vwDelete.definition.url,
-                                  deleteUrl: vwDelete.definition.url,
-                              }}
-                          />
-                      </div>
-                  </div>
-              </CardContent>
-          </Card>
-      </AppLayout>
-  );
+                        <div className="overflow-hidden">
+                            <Table
+                                data={votes_websites}
+                                columns={columnsVoteWebsite}
+                                config={{
+                                    editUrl: voteWebsite.delete.definition.url,
+                                    deleteUrl: voteWebsite.delete.definition.url,
+                                }}
+                            />
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+        </AppLayout>
+    );
 }
