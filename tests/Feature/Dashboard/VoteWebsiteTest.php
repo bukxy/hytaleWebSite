@@ -10,7 +10,7 @@ test('vote website create page', function () {
 
     $response = $this
         ->actingAs($user)
-        ->get(route('dashboard.vote-website.vwAdd'));
+        ->get(route('dashboard.vote-website.add'));
 
     $response->assertStatus(200);
 });
@@ -26,8 +26,8 @@ test('vote website store', function () {
 
     $response = $this
         ->actingAs($user)
-        ->from(route('dashboard.vote-website.vwAdd'))
-        ->post(route('dashboard.vote-website.vwAddStore'), [
+        ->from(route('dashboard.vote-website.add'))
+        ->post(route('dashboard.vote-website.addStore'), [
         'name' => 'Test Vote Website',
         'url' => 'https://testvotewebsite.com',
         'verification_key' => 'testapikey123',
@@ -45,7 +45,5 @@ test('vote website store', function () {
     ]);
 
     $response
-        ->assertRedirect(route('dashboard.vote-website.vwAdd'));
-
-//    $response->assertRedirect(route('dashboard.vote-website.vwAdd'));
+        ->assertRedirect(route('dashboard.vote-website.add'));
 });
