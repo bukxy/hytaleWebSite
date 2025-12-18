@@ -19,13 +19,6 @@ use Ramsey\Uuid\Uuid;
 class VoteWebsiteController extends Controller
 {
 
-//    public function retrieve()
-//    {
-//        return Inertia::render('dashboard/votes_websites/list', [
-//            // 'vote_websites' => VoteWebsite::all(),
-//        ]);
-//    }
-
     public function add()
     {
         return Inertia::render('dashboard/votes_websites/add_edit', [
@@ -104,7 +97,7 @@ class VoteWebsiteController extends Controller
             return back()->withErrors($errors);
         }
 
-        return to_route('dashboard.vote-website.vwAdd')->with('success', 'Vote website created successfully.');
+        return to_route('dashboard.vote-website.add')->with('success', 'Vote website created successfully.');
     }
 
     public function delete(int $id): RedirectResponse
@@ -112,6 +105,6 @@ class VoteWebsiteController extends Controller
         $voteWebsite = VoteWebsite::findOrFail($id);
         $voteWebsite->delete();
 
-        return to_route('dashboard.vVote')->with('success', 'Vote website deleted successfully.');
+        return to_route('dashboard.vote.list')->with('success', 'Vote website deleted successfully.');
     }
 }
