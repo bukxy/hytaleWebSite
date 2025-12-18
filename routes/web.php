@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\VoteController;
-use App\Http\Controllers\VoteWebsiteController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -38,18 +36,35 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
 
-        Route::get('/', function () { return Inertia::render('dashboard'); })->name('dashHome');
+        Route::get('/', function () { return Inertia::render('dashboard'); })->name('home');
 
-        Route::prefix('vote', )->group(function () {
-            Route::get('/', [VoteController::class, 'retrieve'])->name('vVote');
+        Route::prefix('vote')->name('vote.')->group(function () {
+            Route::controller(\App\Http\Controllers\VoteController::class)->group(function () {
+                Route::get('/', 'retrieve')->name('list');
+            });
         });
 
         Route::prefix('vote-website')->name('vote-website.')->group(function () {
-            Route::controller(VoteWebsiteController::class)->group(function () {
-//                    Route::get('/', 'retrieve')->name('list');
-                Route::get('/add', 'add')->name('vwAdd');
-                Route::post('/add', 'addStore')->name('vwAddStore');
-                Route::delete('/delete/{id}', 'delete')->name('vwDelete');
+            Route::controller(\App\Http\Controllers\VoteWebsiteController::class)->group(function () {
+                Route::get('/add', 'add')->name('add');
+                Route::post('/add', 'addStore')->name('addStore');
+
+                Route::get('/edit/{id}', 'edit')->name('edit');
+                Route::patch('/edit/{id}', 'editStore')->name('editStore');
+
+                Route::delete('/delete/{id}', 'delete')->name('delete');
+            });
+        });
+
+        Route::prefix('vote-reward')->name('vote-reward.')->group(function () {
+            Route::controller(\App\Http\Controllers\VoteRewardsController::class)->group(function () {
+                Route::get('/add', 'add')->name('add');
+                Route::post('/add', 'addStore')->name('addStore');
+
+                Route::get('/edit/{id}', 'edit')->name('edit');
+                Route::patch('/edit/{id}', 'editStore')->name('editStore');
+
+                Route::delete('/delete/{id}', 'delete')->name('delete');
             });
         });
 
