@@ -69,8 +69,6 @@ export default function Vote({ data, votes_websites }: { data: VoteWebsite | nul
 
     const [formData, setFormData] = useState<VoteWebsiteForm>(() => initData(data ?? undefined));
 
-    console.log(formData);
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type, checked, files } = e.target;
         setFormData((prev) => ({
@@ -79,8 +77,10 @@ export default function Vote({ data, votes_websites }: { data: VoteWebsite | nul
         }));
     };
 
+    const voteWebsiteId = data?.id;
+
     const formConfig =
-        data?.id !== undefined ? voteWebsite.editStore.form({ id: data.id }) : voteWebsite.addStore.form();
+        voteWebsiteId !== undefined ? voteWebsite.editStore.form({ id: voteWebsiteId }) : voteWebsite.addStore.form();
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -94,7 +94,7 @@ export default function Vote({ data, votes_websites }: { data: VoteWebsite | nul
                             {...formConfig}
                             resetOnSuccess={false}
                             onSuccess={() => {
-                                if (!data?.id) {
+                                if (!voteWebsiteId) {
                                     setFormData({
                                         name: '',
                                         url: '',
@@ -226,22 +226,22 @@ export default function Vote({ data, votes_websites }: { data: VoteWebsite | nul
                                             autoComplete="logo"
                                         />
                                         <InputError message={errors.logo} />
-                                        {data?.logo && (
+                                        {data?.logo && voteWebsiteId && (
                                             <div className="grid w-full grid-cols-2 items-center justify-center">
                                                 <div className="me-5 flex justify-center">
                                                     <span className={`me-5`}>Actual logo :</span>
-                                                    {/*<button*/}
-                                                    {/*    type="button"*/}
-                                                    {/*    onClick={() => {*/}
-                                                    {/*        if (confirm('Are you sure to delete the logo ?')) {*/}
-                                                    {/*            router.delete(*/}
-                                                    {/*                configDelete.replace('{id}', String(keyValue)),*/}
-                                                    {/*            );*/}
-                                                    {/*        }*/}
-                                                    {/*    }}*/}
-                                                    {/*>*/}
-                                                    {/*    <Trash className="cursor-pointer text-destructive" />*/}
-                                                    {/*</button>*/}
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            if (confirm('Are you sure to delete the logo ?')) {
+                                                                router.delete(
+                                                                    voteWebsite.deleteLogo(voteWebsiteId).url,
+                                                                );
+                                                            }
+                                                        }}
+                                                    >
+                                                        <Trash className="cursor-pointer text-destructive" />
+                                                    </button>
                                                 </div>
                                                 <img
                                                     alt={String(data.logo.path)}
@@ -260,7 +260,7 @@ export default function Vote({ data, votes_websites }: { data: VoteWebsite | nul
                                         data-test="create-vote-website-button"
                                     >
                                         {processing && <Spinner />}
-                                        {data?.id ? 'S A V E' : 'C R E A T E'}
+                                        {voteWebsiteId ? 'S A V E' : 'C R E A T E'}
                                     </Button>
                                 </>
                             )}
