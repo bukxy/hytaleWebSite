@@ -145,39 +145,44 @@ class VoteWebsiteController extends Controller
                     throw $e;
                 }
 
-//                if ($request->file('logo')) {
-//                    try {
-//                        $logoFile = $request->file('logo');
-//                        $filename = Uuid::uuid4()->toString().'.'.$logoFile->extension();
-//
-//                        $path = Storage::disk('public')->putFileAs(
-//                            '',
-//                            $logoFile,
-//                            $filename
-//                        );
-//
-//                        if (! $path) {
-//                            throw new \RuntimeException();
-//                        }
-//
-//                    } catch (\Throwable $e) {
-//                        $errors->add('logo', 'Error upload logo');
-//                        throw $e;
-//                    }
-//
-//                    try {
-//                        $voteWebsite->logo()->create([
-//                            'filename' => $filename,
-//                            'path' => $path,
-//                            'type'     => File::LOGO,
-//                            'user_id'  => auth()->id(),
-//                        ]);
-//                    } catch (\Throwable $e) {
-//                        $errors->add('logo', 'Error create logo');
-//                        throw $e;
-//                    }
-//
-//                }
+                if ($request->file('logo')) {
+                    try {
+
+                        if ($voteWebsite->logo) {
+                            Storage::disk('public')->delete($voteWebsite->logo->path);
+                            $voteWebsite->logo->delete();
+                        }
+
+                        $logoFile = $request->file('logo');
+                        $filename = Uuid::uuid4()->toString().'.'.$logoFile->extension();
+
+                        $path = Storage::disk('public')->putFileAs(
+                            '',
+                            $logoFile,
+                            $filename
+                        );
+
+                        if (! $path) {
+                            throw new \RuntimeException();
+                        }
+
+                    } catch (\Throwable $e) {
+                        $errors->add('logo', 'Error upload logo');
+                        throw $e;
+                    }
+
+                    try {
+                        $voteWebsite->logo()->create([
+                            'filename' => $filename,
+                            'path' => $path,
+                            'type'     => File::LOGO,
+                        ]);
+                    } catch (\Throwable $e) {
+                        $errors->add('logo', 'Error update logo');
+                        throw $e;
+                    }
+
+                }
             });
 
         } catch (\Throwable $e) {
@@ -188,6 +193,20 @@ class VoteWebsiteController extends Controller
         }
 
         return to_route('dashboard.vote-website.edit', $voteWebsite->id)->with('success', 'Vote website created successfully.');
+    }
+
+    public function deleteLogo(int $id): RedirectResponse
+    {
+        $voteWebsite = VoteWebsite::findOrFail($id);
+
+        if (!$voteWebsite->logo) {
+            return to_route('dashboard.vote-website.edit', $voteWebsite->id)->with('error', 'No logo to delete.');
+        }
+
+        Storage::disk('public')->delete($voteWebsite->logo->path);
+        $voteWebsite->logo->delete();
+
+        return to_route('dashboard.vote-website.edit', $voteWebsite->id)->with('success', 'Logo deleted.');
     }
 
     public function delete(int $id): RedirectResponse
