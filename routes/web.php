@@ -53,6 +53,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::patch('/edit/{id}', 'editStore')->name('editStore');
 
                 Route::delete('/delete/{id}', 'delete')->name('delete');
+                Route::delete('/delete/{id}/logo', 'deleteLogo')->name('deleteLogo');
             });
         });
 
