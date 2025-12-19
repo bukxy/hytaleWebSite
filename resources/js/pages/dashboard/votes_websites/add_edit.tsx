@@ -16,17 +16,6 @@ import { useState } from 'react';
 import { VoteWebsite, VoteWebsiteForm } from '@/types/vote-website';
 import {Trash} from "lucide-react";
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Vote',
-        href: vote.list().url,
-    },
-    {
-        title: 'New vote website',
-        href: voteWebsite.add().url,
-    },
-];
-
 const columnsVoteWebsite: TableColumn<VoteWebsite>[] = [
     { key: 'id', label: 'ID', width: 'w-10' },
     { key: 'name', label: 'Name', width: 'w-56' },
@@ -58,6 +47,19 @@ const columnsVoteWebsite: TableColumn<VoteWebsite>[] = [
 
 export default function Vote({ data, votes_websites }: { data: VoteWebsite | null; votes_websites: VoteWebsite[] }) {
 
+    const voteWebsiteId = data?.id;
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'Vote',
+            href: vote.list().url,
+        },
+        {
+            title: voteWebsiteId ? `Edit vote website` : 'New vote website',
+            href: voteWebsite.add().url,
+        },
+    ];
+
     const initData = (data?: VoteWebsite): VoteWebsiteForm => ({
         name: data?.name ?? '',
         url: data?.url ?? '',
@@ -77,8 +79,6 @@ export default function Vote({ data, votes_websites }: { data: VoteWebsite | nul
         }));
     };
 
-    const voteWebsiteId = data?.id;
-
     const formConfig =
         voteWebsiteId !== undefined ? voteWebsite.editStore.form({ id: voteWebsiteId }) : voteWebsite.addStore.form();
 
@@ -88,7 +88,7 @@ export default function Vote({ data, votes_websites }: { data: VoteWebsite | nul
 
             <div>
                 <div className="rounded-xl border border-sidebar-border/70 p-4 dark:border-sidebar-border">
-                    <Heading title={breadcrumbs[1].title} />
+                    <Heading title={voteWebsiteId ? `${breadcrumbs[1].title} : ${data?.name}` : breadcrumbs[1].title} />
                     <div className="flex w-full flex-col gap-6 lg:flex-row">
                         <Form
                             {...formConfig}
