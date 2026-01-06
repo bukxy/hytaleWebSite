@@ -13,6 +13,7 @@ class File extends Model
     protected $table = 'files';
 
     const LOGO = "logo";
+    const REWARD_IMAGE = "reward_image";
 
     protected $fillable = [
         'filename',
