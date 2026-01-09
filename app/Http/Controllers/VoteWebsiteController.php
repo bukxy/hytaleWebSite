@@ -103,13 +103,10 @@ class VoteWebsiteController extends Controller
 
     public function edit(int $id)
     {
-        $voteWebsite = VoteWebsite::with(['createdBy', 'updatedBy', 'logo'])->findOrFail($id);
-
-        if (!$voteWebsite)
-            return to_route('dashboard.vote.list')->with('error', 'Vote website does not exist');
+        $voteWebsite = VoteWebsite::with(['createdBy', 'updatedBy', 'logo'])->findOrFail($id)->toResource(VoteWebsiteResource::class);
 
         return Inertia::render('dashboard/votes_websites/add_edit', [
-            'data' => (new VoteWebsiteResource($voteWebsite))->resolve(),
+            'data' => $voteWebsite->resolve(),
             'votes_websites' => VoteWebsite::with(['createdBy', 'updatedBy'])
                 ->get()
                 ->map(function ($vw) {
@@ -134,7 +131,7 @@ class VoteWebsiteController extends Controller
         $voteWebsite = VoteWebsite::findOrFail($id);
 
         $errors = new MessageBag();
-//        dd($request->all());
+
         try {
             DB::transaction(function () use ($voteWebsite, $errors, $request) {
 
