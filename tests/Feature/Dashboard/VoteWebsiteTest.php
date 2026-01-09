@@ -20,9 +20,7 @@ test('vote website store', function () {
     $user = User::factory()->create();
     $filename = 'testlogo.png';
 
-    $voteWebsite = VoteWebsite::factory()->create([
-        'user_id' => $user->id,
-    ]);
+    $voteWebsite = VoteWebsite::factory()->create();
 
     $response = $this
         ->actingAs($user)

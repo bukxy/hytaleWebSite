@@ -23,7 +23,6 @@ class VoteWebsiteFactory extends Factory
             'verification_key' => 'testapikey123',
             'has_verification' => true,
             'is_enabled' => true,
-            'user_id' => User::factory(),
             'created_by' => User::factory()
         ];
     }
