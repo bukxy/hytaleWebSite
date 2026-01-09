@@ -35,8 +35,6 @@ class VoteWebsiteResource extends JsonResource
             ]),
             'updated_at' => $this->updated_at?->toISOString(),
 
-            'user_id' => $this->user_id,
-
             'logo' => $this->whenLoaded('logo', fn () => [
                 'id' => $this->logo->id,
                 'path' => Storage::url($this->logo->path),
