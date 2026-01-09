@@ -21,7 +21,6 @@ class VoteWebsite extends Model
         'has_verification',
         'created_by',
         'updated_by',
-        'user_id'
     ];
 
     protected $casts = [
@@ -37,11 +36,6 @@ class VoteWebsite extends Model
                 $voteWebsite->logo->delete();
             }
         });
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function createdBy()
