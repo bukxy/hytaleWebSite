@@ -20,7 +20,7 @@ return new class extends Migration
             $table->bigInteger('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
 
-            $table->morphs('fileable');
+            $table->nullableMorphs('fileable');
 
             $table->timestamps();
         });
