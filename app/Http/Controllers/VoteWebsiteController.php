@@ -6,6 +6,7 @@ use App\Http\Requests\VoteWebsiteCreateEditRequest;
 use App\Http\Resources\VoteWebsiteResource;
 use App\Models\File;
 use App\Models\VoteWebsite;
+use App\Services\FileUploadService;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -41,13 +42,13 @@ class VoteWebsiteController extends Controller
         ]);
     }
 
-    public function addStore(VoteWebsiteCreateEditRequest $request): RedirectResponse
+    public function addStore(VoteWebsiteCreateEditRequest $request, FileUploadService $fileUploadService): RedirectResponse
     {
 
         $errors = new MessageBag();
 
         try {
-            DB::transaction(function () use ($errors, $request) {
+            DB::transaction(function () use ($fileUploadService, $errors, $request) {
 
                 try {
                     $voteWebsite = VoteWebsite::create($request->validated());
@@ -58,36 +59,22 @@ class VoteWebsiteController extends Controller
 
                 if ($request->file('logo')) {
                     try {
-                        $logoFile = $request->file('logo');
-                        $filename = Uuid::uuid4()->toString().'.'.$logoFile->extension();
-
-                        $path = Storage::disk('public')->putFileAs(
-                            '',
-                            $logoFile,
-                            $filename
+                        $file = $fileUploadService->store(
+                            $request->file('logo'),
+                            File::LOGO,
+                            auth()->id()
                         );
-
-                        if (! $path) {
-                            throw new \RuntimeException();
-                        }
-
                     } catch (\Throwable $e) {
                         $errors->add('logo', 'Error upload logo');
                         throw $e;
                     }
 
                     try {
-                        $voteWebsite->logo()->create([
-                            'filename' => $filename,
-                            'path' => $path,
-                            'type'     => File::LOGO,
-                            'user_id'  => auth()->id(),
-                        ]);
+                        $voteWebsite->logo()->save($file);
                     } catch (\Throwable $e) {
                         $errors->add('logo', 'Error create logo');
                         throw $e;
                     }
-
                 }
             });
 
@@ -125,7 +112,7 @@ class VoteWebsiteController extends Controller
         ]);
     }
 
-    public function editStore(VoteWebsiteCreateEditRequest $request, int $id): RedirectResponse
+    public function editStore(VoteWebsiteCreateEditRequest $request, FileUploadService $fileUploadService, int $id): RedirectResponse
     {
 
         $voteWebsite = VoteWebsite::findOrFail($id);
@@ -133,7 +120,7 @@ class VoteWebsiteController extends Controller
         $errors = new MessageBag();
 
         try {
-            DB::transaction(function () use ($voteWebsite, $errors, $request) {
+            DB::transaction(function () use ($fileUploadService, $voteWebsite, $errors, $request) {
 
                 try {
                     $voteWebsite->update($request->validated());
@@ -145,40 +132,25 @@ class VoteWebsiteController extends Controller
                 if ($request->file('logo')) {
                     try {
 
-                        if ($voteWebsite->logo) {
-                            Storage::disk('public')->delete($voteWebsite->logo->path);
-                            $voteWebsite->logo->delete();
-                        }
+                        if ($voteWebsite->logo)
+                            $fileUploadService->delete($voteWebsite->logo);
 
-                        $logoFile = $request->file('logo');
-                        $filename = Uuid::uuid4()->toString().'.'.$logoFile->extension();
-
-                        $path = Storage::disk('public')->putFileAs(
-                            '',
-                            $logoFile,
-                            $filename
+                        $file = $fileUploadService->store(
+                            $request->file('logo'),
+                            File::LOGO,
+                            auth()->id()
                         );
-
-                        if (! $path) {
-                            throw new \RuntimeException();
-                        }
-
                     } catch (\Throwable $e) {
                         $errors->add('logo', 'Error upload logo');
                         throw $e;
                     }
 
                     try {
-                        $voteWebsite->logo()->create([
-                            'filename' => $filename,
-                            'path' => $path,
-                            'type'     => File::LOGO,
-                        ]);
+                        $voteWebsite->logo()->save($file);
                     } catch (\Throwable $e) {
-                        $errors->add('logo', 'Error update logo');
+                        $errors->add('logo', 'Error create logo');
                         throw $e;
                     }
-
                 }
             });
 
@@ -192,7 +164,7 @@ class VoteWebsiteController extends Controller
         return to_route('dashboard.vote-website.edit', $voteWebsite->id)->with('success', 'Vote website created successfully.');
     }
 
-    public function deleteLogo(int $id): RedirectResponse
+    public function deleteLogo(FileUploadService $fileUploadService, int $id): RedirectResponse
     {
         $voteWebsite = VoteWebsite::findOrFail($id);
 
@@ -200,15 +172,16 @@ class VoteWebsiteController extends Controller
             return to_route('dashboard.vote-website.edit', $voteWebsite->id)->with('error', 'No logo to delete.');
         }
 
-        Storage::disk('public')->delete($voteWebsite->logo->path);
-        $voteWebsite->logo->delete();
+        $fileUploadService->delete($voteWebsite->logo);
 
         return to_route('dashboard.vote-website.edit', $voteWebsite->id)->with('success', 'Logo deleted.');
     }
 
-    public function delete(int $id): RedirectResponse
+    public function delete(FileUploadService $fileUploadService, int $id): RedirectResponse
     {
         $voteWebsite = VoteWebsite::findOrFail($id);
+
+        $fileUploadService->delete($voteWebsite->logo);
         $voteWebsite->delete();
 
         return to_route('dashboard.vote.list')->with('success', 'Vote website deleted successfully.');
