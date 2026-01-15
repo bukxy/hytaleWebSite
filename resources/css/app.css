@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 
 @import 'tw-animate-css';
+@import './button.css';
 
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -76,8 +77,6 @@
     --muted-foreground: oklch(0.556 0 0);
     --accent: oklch(0.9 0 0);
     --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --destructive-foreground: oklch(0.577 0.245 27.325);
     --border: oklch(0.922 0 0);
     --input: oklch(0.922 0 0);
     --ring: oklch(0.87 0 0);
@@ -89,13 +88,24 @@
     --radius: 0.625rem;
     --sidebar: oklch(0.985 0 0);
     --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-primary: #15243a;
+    --sidebar-primary-foreground: #203658;;
     --sidebar-accent: oklch(0.9 0 0);
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.87 0 0);
     --success: oklch(0.72 0.178 149.362);
+
+    --foreground-light: oklch(0.95 0.005 250);
+    --button-primary: oklch(0.623 0.102 253.083);
+    --button-primary-hover: oklch(0.449 0.107 251.486);
+    --button-primary-border: oklch(0.623 0.102 253.083);
+    --button-secondary: oklch(0.273 0.043 254.574);
+    --button-secondary-hover: oklch(0.449 0.107 251.486);
+    --button-secondary-border: oklch(0.623 0.102 253.083);
+    --button-destructive: oklch(0.529 0.199 12.054);
+    --button-destructive-hover: oklch(0.469 0.182 14.098);
+    --button-destructive-border: oklch(0.649 0.243 11.512);
 }
 
 .dark {

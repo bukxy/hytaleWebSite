@@ -1,0 +1,58 @@
+.button-primary {
+    --border-color: var(--button-primary-border);
+    box-shadow: 0 0 0 2px var(--button-primary-border) inset;
+    background: linear-gradient(90deg, rgb(70, 93, 169), rgb(69, 120, 170));
+}
+
+.button-primary:not(:disabled):hover {
+    box-shadow: 0 0 0 2px var(--border-color) inset;
+    background: none;
+}
+
+.button-secondary {
+    --border-color: var(--button-secondary-border);
+    box-shadow: 0 0 0 2px var(--button-secondary-border) inset;
+    background: linear-gradient(90deg, rgb(70, 93, 169), rgb(69, 120, 170));
+}
+
+.button-secondary:not(:disabled):hover {
+    box-shadow: 0 0 0 2px var(--border-color) inset;
+    background: var(--button-secondary);
+}
+
+.button-destructive {
+    --border-color: var(--button-destructive-border);
+    box-shadow: 0 0 0 2px var(--button-destructive-border) inset;
+    background: var(--destructive);
+}
+
+.button-destructive:not(:disabled):hover {
+    border-color: var(--border-color);
+}
+
+.button-primary, .button-secondary, .button-destructive {
+    text-transform: uppercase;
+    letter-spacing: .01em;
+    color: var(--foreground-light);
+    box-sizing: border-box;
+    cursor: pointer;
+    background-color: #273349;
+    background-image: none;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: cover,auto;
+    background-attachment: scroll;
+    background-origin: padding-box;
+    background-clip: border-box;
+    border: 2px solid rgb(71, 81, 107);
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-family: Nunito Sans Variable,sans-serif;
+    font-weight: 700;
+}
+
+:is(.button-primary, .button-secondary, .button-destructive):disabled {
+    cursor: not-allowed;
+    background: #39424d !important;
+    border-color: #464e58 !important;
+}
