@@ -83,7 +83,7 @@ export default function Vote({ data, votes_websites }: { data: VoteWebsite | nul
         voteWebsiteId !== undefined ? voteWebsite.editStore.form({ id: voteWebsiteId }) : voteWebsite.addStore.form();
 
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
+        <>
             <Head title={breadcrumbs[1].title} />
 
             <div>
@@ -274,6 +274,6 @@ export default function Vote({ data, votes_websites }: { data: VoteWebsite | nul
                     </div>
                 </div>
             </div>
-        </AppLayout>
+        </>
     );
 }
