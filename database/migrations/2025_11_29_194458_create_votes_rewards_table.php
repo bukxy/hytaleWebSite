@@ -17,7 +17,7 @@ return new class extends Migration
             $table->decimal('chances');
             $table->decimal('money')->default(0);
             $table->text('commands')->nullable();
-            $table->boolean('need_online')->default(false);
+            $table->boolean('is_online_required')->default(false);
             $table->boolean('is_enabled')->default(true);
 
             $table->timestamps();
