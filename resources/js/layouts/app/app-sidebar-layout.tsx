@@ -1,7 +1,7 @@
-import { AppContent } from '@/components/app-content';
-import { AppShell } from '@/components/app-shell';
-import { AppSidebar } from '@/components/app-sidebar';
-import { AppSidebarHeader } from '@/components/app-sidebar-header';
+import { DashboardContent } from '@/components/dashboard/dashboard-content';
+import { DashboardShell } from '@/components/dashboard/dashboard-shell';
+import { DashboardSidebar } from '@/components/dashboard/dashboard-sidebar';
+import { DashboardSidebarHeader } from '@/components/dashboard/dashboard-sidebar-header';
 import { type BreadcrumbItem } from '@/types';
 import { type PropsWithChildren } from 'react';
 
@@ -10,12 +10,12 @@ export default function AppSidebarLayout({
     breadcrumbs = [],
 }: PropsWithChildren<{ breadcrumbs?: BreadcrumbItem[] }>) {
     return (
-        <AppShell variant="sidebar">
-            <AppSidebar />
-            <AppContent variant="sidebar" className="overflow-x-hidden">
-                <AppSidebarHeader breadcrumbs={breadcrumbs} />
+        <DashboardShell variant="sidebar">
+            <DashboardSidebar />
+            <DashboardContent variant="sidebar" className="overflow-x-hidden">
+                <DashboardSidebarHeader breadcrumbs={breadcrumbs} />
                 {children}
-            </AppContent>
-        </AppShell>
+            </DashboardContent>
+        </DashboardShell>
     );
 }
