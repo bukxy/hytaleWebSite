@@ -7,7 +7,7 @@ interface AppShellProps {
     variant?: 'header' | 'sidebar';
 }
 
-export function AppShell({ children, variant = 'header' }: AppShellProps) {
+export function DashboardShell({ children, variant = 'header' }: AppShellProps) {
     const isOpen = usePage<SharedData>().props.sidebarOpen;
 
     if (variant === 'header') {
