@@ -1,20 +1,11 @@
 import { Table } from '@/components/table';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
-import AppLayout from '@/layouts/app-layout';
-import vote from '@/routes/dashboard/vote/index';
 import voteWebsite from '@/routes/dashboard/vote-website';
-import { BreadcrumbItem, TableColumn } from '@/types';
+import { TableColumn } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { Area, AreaChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts';
 import {VoteWebsite} from "@/types/vote-website";
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Vote',
-        href: vote.list().url,
-    },
-];
 
 // const columnsVote: TableColumn<Vote>[] = [
 //     {key: 'id', label: 'ID', width: 'w-10'},
@@ -83,7 +74,7 @@ export default function VoteList({
     votes_websites: VoteWebsite[];
 }) {
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
+        <>
             <Head title="Vote" />
             <Card className="m-4">
                 <CardContent>
@@ -138,6 +129,6 @@ export default function VoteList({
                     </div>
                 </CardContent>
             </Card>
-        </AppLayout>
+        </>
     );
 }
