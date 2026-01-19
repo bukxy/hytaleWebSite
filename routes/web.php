@@ -36,7 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
 
-        Route::get('/', function () { return Inertia::render('dashboard/home'); })->name('home');
+        Route::get('/', [\App\Http\Controllers\DashboardController::class, 'home'])->name('home');
 
         Route::prefix('vote')->name('vote.')->group(function () {
             Route::controller(\App\Http\Controllers\VoteController::class)->group(function () {
