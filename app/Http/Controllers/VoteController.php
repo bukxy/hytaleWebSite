@@ -10,8 +10,21 @@ use Inertia\Inertia;
 
 class VoteController extends Controller
 {
+
+    private function setBreadcrumbs(array $crumbs): void
+    {
+        session()->put('breadcrumbs', array_merge([
+            ['title' => 'Dashboard', 'href' => '/dashboard'],
+        ], $crumbs));
+    }
+
     public function retrieve()
     {
+
+        $this->setBreadcrumbs([
+            ['title' => 'Votes', 'href' => route('dashboard.vote.list')],
+        ]);
+
         return Inertia::render('dashboard/votes/list', [
             'votes_websites' => VoteWebsite::with(['createdBy', 'updatedBy'])
                 ->get()

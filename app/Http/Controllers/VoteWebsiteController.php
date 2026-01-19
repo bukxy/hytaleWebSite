@@ -21,8 +21,21 @@ use Ramsey\Uuid\Uuid;
 class VoteWebsiteController extends Controller
 {
 
+    private function setBreadcrumbs(array $crumbs): void
+    {
+        session()->put('breadcrumbs', array_merge([
+            ['title' => 'Dashboard', 'href' => '/dashboard'],
+            ['title' => 'Votes', 'href' => route('dashboard.vote.list')]
+        ], $crumbs));
+    }
+
     public function add()
     {
+
+        $this->setBreadcrumbs([
+            ['title' => 'Create vote website', 'href' => route('dashboard.vote-website.add')],
+        ]);
+
         return Inertia::render('dashboard/votes_websites/add_edit', [
             'votes_websites' => VoteWebsite::with(['createdBy', 'updatedBy'])
                 ->get()
@@ -90,6 +103,10 @@ class VoteWebsiteController extends Controller
 
     public function edit(int $id)
     {
+        $this->setBreadcrumbs([
+            ['title' => 'Edit vote website', 'href' => route('dashboard.vote-website.edit', $id)],
+        ]);
+
         $voteWebsite = VoteWebsite::with(['createdBy', 'updatedBy', 'logo'])->findOrFail($id)->toResource(VoteWebsiteResource::class);
 
         return Inertia::render('dashboard/votes_websites/add_edit', [
