@@ -95,6 +95,7 @@
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.87 0 0);
     --success: oklch(0.72 0.178 149.362);
+    --destructive: oklch(0.529 0.199 12.054);
 
     --foreground-light: oklch(0.95 0.005 250);
     --button-primary: oklch(0.623 0.102 253.083);
