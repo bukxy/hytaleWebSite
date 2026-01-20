@@ -15,10 +15,16 @@ return new class extends Migration
             $table->increments('id');
             $table->string('name');
             $table->decimal('chances');
-            $table->decimal('money')->default(0);
+            $table->decimal('money')->nullable();
             $table->text('commands')->nullable();
             $table->boolean('is_online_required')->default(false);
             $table->boolean('is_enabled')->default(true);
+
+            $table->unsignedBigInteger('created_by');
+            $table->foreign('created_by')->references('id')->on('users')->cascadeOnDelete();
+
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->foreign('updated_by')->references('id')->on('users');
 
             $table->timestamps();
         });
