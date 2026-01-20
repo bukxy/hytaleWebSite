@@ -23,22 +23,16 @@ class VoteWebsiteResource extends JsonResource
             'has_verification' => (bool) $this->has_verification,
             'verification_key' => $this->verification_key,
 
-            'created_by' => $this->whenLoaded('createdBy', fn () => [
-                'name' => $this->createdBy->name,
-                'email' => $this->createdBy->email,
+            'created' => new AuditResource([
+                'at' => $this->created_at,
+                'by' => $this->createdBy
             ]),
-            'created_at' => $this->created_at?->toISOString(),
+            'updated' =>  new AuditResource([
+                'at' => $this->updated_at,
+                'by' => $this->updatedBy
+            ]),
 
-            'updated_by' => $this->whenLoaded('updatedBy', fn () => [
-                'name' => $this->updatedBy->name,
-                'email' => $this->updatedBy->email,
-            ]),
-            'updated_at' => $this->updated_at?->toISOString(),
-
-            'logo' => $this->whenLoaded('logo', fn () => [
-                'id' => $this->logo->id,
-                'path' => Storage::url($this->logo->path),
-            ]),
+            'logo' => new FileRelationResource($this->resource, 'logo')
         ];
     }
 }
