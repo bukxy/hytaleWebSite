@@ -59,6 +59,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::prefix('vote-reward')->name('vote-reward.')->group(function () {
             Route::controller(\App\Http\Controllers\VoteRewardsController::class)->group(function () {
+
+                Route::get('/', 'list')->name('list');
+
                 Route::get('/add', 'add')->name('add');
                 Route::post('/add', 'addStore')->name('addStore');
 
