@@ -48,6 +48,11 @@ export interface UserShort {
     email: string;
 }
 
+export interface Audit {
+    at: string;
+    by: UserShort | null;
+}
+
 export interface Vote {
     id: number;
     voter_name: string;
@@ -65,7 +70,11 @@ export interface TableColumn<T> {
     key: keyof T;
     label: string;
     width?: string;
-    type?: 'date' | 'number' | 'boolean' | 'image' | 'link';
+    type?: 'date' | 'number' | 'boolean' | 'image' | 'link' | 'user';
     hms?: boolean; // for date type, whether to show hours, minutes, seconds
     editHref?: NonNullable<InertiaLinkProps['href']>;
+}
+
+export interface ResourceCollection<T> {
+    data: T[];
 }
