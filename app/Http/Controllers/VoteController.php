@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\VoteWebsiteResource;
 use App\Models\Vote;
 use App\Models\VoteReward;
 use App\Models\VoteWebsite;
@@ -26,22 +27,7 @@ class VoteController extends Controller
         ]);
 
         return Inertia::render('dashboard/votes/list', [
-            'votes_websites' => VoteWebsite::with(['createdBy', 'updatedBy'])
-                ->get()
-                ->map(function ($vw) {
-                    return [
-                        'id' => $vw->id,
-                        'name' => $vw->name,
-                        'url' => $vw->url,
-                        'created_at' => $vw->created_at,
-                        'created_by' => $vw->createdBy->name,
-                        'updated_at' => $vw->updated_at,
-                        'updated_by' => $vw->updatedBy?->name,
-                        'is_enabled' => $vw->is_enabled,
-                        'has_verification' => $vw->has_verification,
-                        'logo' => $vw->logo ? Storage::url($vw->logo->path) : null,
-                    ];
-                }),
+            'votes_websites' => VoteWebsiteResource::collection(VoteWebsite::with(['createdBy', 'updatedBy', 'logo'])->get()),
             'votes' => Vote::with(['user', 'voteWebsite'])
                 ->get()
                 ->map(function ($vote) {
