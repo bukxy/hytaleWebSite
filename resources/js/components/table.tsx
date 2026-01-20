@@ -1,7 +1,8 @@
 import FormattedString from '@/components/ui/FormattedString';
-import { TableColumn } from '@/types';
+import { Audit, TableColumn } from '@/types';
 import { Link, router } from '@inertiajs/react';
 import { CheckCircle, Pencil, Trash, XCircle } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface TableProps<T extends object> {
     data?: T[];
@@ -82,48 +83,79 @@ export function Table<T extends object>({ data = [], columns = [], config }: Tab
                                                     </div>
                                                 </td>
                                             )}
-                                            {columns.map((col) => (
-                                                <td
-                                                    key={col.key.toString()}
-                                                    className="border-b border-gray-500 px-6 py-4 text-center text-sm leading-5 whitespace-nowrap text-blue-900"
-                                                >
-                                                    {col.type === 'date' ? (
-                                                        <FormattedString
-                                                            data={String(row[col.key])}
-                                                            hms={!!col.hms}
-                                                            date
-                                                        />
-                                                    ) : col.type === 'boolean' ? (
-                                                        <div className="flex w-full items-center justify-center">
-                                                            {row[col.key] ? (
-                                                                <CheckCircle className={'text-success'} />
-                                                            ) : (
-                                                                <XCircle className={'text-destructive'} />
-                                                            )}
-                                                        </div>
-                                                    ) : col.type === 'image' ? (
-                                                        <div className="flex w-full items-center justify-center">
-                                                            {row[col.key] && (
-                                                                <img
-                                                                    alt={String(row[col.key])}
-                                                                    src={String(row[col.key])}
-                                                                    className={'h-8 w-8 rounded-full'}
-                                                                />
-                                                            )}
-                                                        </div>
-                                                    ) : col.type === 'link' ? (
-                                                        <a
-                                                            href={String(row[col.key])}
-                                                            target="_blank"
-                                                            className={`italic`}
-                                                        >
-                                                            {String(row[col.key])}
-                                                        </a>
-                                                    ) : (
-                                                        <FormattedString data={String(row[col.key])} />
-                                                    )}
-                                                </td>
-                                            ))}
+                                            {columns.map((col) => {
+                                                const image = row[col.key] as { path?: string } | null;
+
+                                                return (
+                                                    <td
+                                                        key={col.key.toString()}
+                                                        className="border-b border-gray-500 px-6 py-4 text-center text-sm leading-5 whitespace-nowrap text-blue-900"
+                                                    >
+                                                        {col.type === 'date' ? (
+                                                            <FormattedString
+                                                                data={String(row[col.key])}
+                                                                hms={!!col.hms}
+                                                                date
+                                                            />
+                                                        ) : col.type === 'boolean' ? (
+                                                            <div className="flex w-full items-center justify-center">
+                                                                {row[col.key] ? (
+                                                                    <CheckCircle className={'text-success'} />
+                                                                ) : (
+                                                                    <XCircle className={'text-destructive'} />
+                                                                )}
+                                                            </div>
+                                                        ) : col.type === 'image' ? (
+                                                            <div className="flex w-full items-center justify-center">
+                                                                {image && (
+                                                                    <img
+                                                                        alt="image"
+                                                                        src={image.path}
+                                                                        className={'h-8 w-8 rounded-full'}
+                                                                    />
+                                                                )}
+                                                            </div>
+                                                        ) : col.type === 'link' ? (
+                                                            <a
+                                                                href={String(row[col.key])}
+                                                                target="_blank"
+                                                                className={`italic`}
+                                                            >
+                                                                {String(row[col.key])}
+                                                            </a>
+                                                        ) : col.type === 'user' ? (
+                                                            (() => {
+                                                                const audit = row[col.key] as Audit | null;
+
+                                                                if (!audit?.by) return <FormattedString data={null} />;
+
+                                                                return (
+                                                                    <TooltipProvider delayDuration={0}>
+                                                                        <Tooltip>
+                                                                            <TooltipTrigger>
+                                                                                <span className="cursor-help">
+                                                                                    <FormattedString
+                                                                                        data={audit?.by?.email ?? null}
+                                                                                    />
+                                                                                </span>
+                                                                            </TooltipTrigger>
+                                                                            <TooltipContent>
+                                                                                <FormattedString
+                                                                                    data={audit?.at ?? null}
+                                                                                    date
+                                                                                    hms
+                                                                                />
+                                                                            </TooltipContent>
+                                                                        </Tooltip>
+                                                                    </TooltipProvider>
+                                                                );
+                                                            })()
+                                                        ) : (
+                                                            <FormattedString data={String(row[col.key])} />
+                                                        )}
+                                                    </td>
+                                                );
+                                            })}
                                         </tr>
                                     );
                                 })}
