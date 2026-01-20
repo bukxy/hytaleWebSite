@@ -1,4 +1,4 @@
-import { UploadedFile, UserShort } from '@/types/index';
+import { Audit, UploadedFile } from '@/types/index';
 
 export interface VoteWebsiteForm {
     name: string;
@@ -13,10 +13,8 @@ export interface VoteWebsite {
     id?: number;
     name: string;
     url: string;
-    created_at?: string;
-    created_by?: UserShort | null;
-    updated_at?: string;
-    updated_by?: UserShort | null;
+    created: Audit;
+    updated: Audit | null;
     is_enabled: boolean;
     has_verification: boolean;
     verification_key?: string;
