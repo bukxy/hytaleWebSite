@@ -11,7 +11,7 @@ export default function AppDashboardLayout({ children, ...props }: AppLayoutProp
     const { breadcrumbs = [] } = usePage<{ breadcrumbs?: BreadcrumbItem[] }>().props;
     return (
         <AppDashboardSidebarLayout breadcrumbs={breadcrumbs} {...props}>
-            {children}sss
+            {children}
         </AppDashboardSidebarLayout>
     );
 }
