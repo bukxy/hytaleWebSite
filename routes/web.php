@@ -60,8 +60,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::prefix('vote-reward')->name('vote-reward.')->group(function () {
             Route::controller(\App\Http\Controllers\VoteRewardsController::class)->group(function () {
 
-                Route::get('/', 'list')->name('list');
-
                 Route::get('/add', 'add')->name('add');
                 Route::post('/add', 'addStore')->name('addStore');
 
@@ -69,6 +67,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::patch('/edit/{id}', 'editStore')->name('editStore');
 
                 Route::delete('/delete/{id}', 'delete')->name('delete');
+                Route::delete('/delete/{id}/image', 'deleteImage')->name('deleteImage');
             });
         });
 
