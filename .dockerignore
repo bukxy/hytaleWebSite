@@ -1,0 +1,20 @@
+# Dépendances (réinstallées dans l'image)
+node_modules
+vendor
+.git
+storage/logs
+storage/framework/cache
+storage/framework/sessions
+storage/framework/views
+.env
+Dockerfile
+docker
+
+# Git et IDE
+.git/
+.gitignore
+
+# Fichiers de build locaux
+dist/
+public/build/
+*.log

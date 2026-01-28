@@ -1,0 +1,24 @@
+services:
+  app:
+    volumes:
+      - ./:/var/www/html:delegated
+      - vendor:/var/www/html/vendor
+      - node_modules:/var/www/html/node_modules
+    command: sh -lc "php-fpm"
+
+  vite:
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html:delegated
+      - vendor:/var/www/html/vendor
+      - node_modules:/var/www/html/node_modules
+    ports:
+      - "5173:5173"
+    command: sh -c "npm run dev -- --host 0.0.0.0 --port 5173"
+    depends_on:
+      init:
+        condition: service_completed_successfully
+      app:
+        condition: service_started
+      mysql:
+        condition: service_started
