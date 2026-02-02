@@ -1,5 +1,5 @@
 import FormattedString from '@/components/ui/FormattedString';
-import { Audit, TableColumn } from '@/types';
+import { Audit, TableColumn, UploadedFile } from '@/types';
 import { Link, router } from '@inertiajs/react';
 import { CheckCircle, Pencil, Trash, XCircle } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -106,15 +106,23 @@ export function Table<T extends object>({ data = [], columns = [], config }: Tab
                                                                 )}
                                                             </div>
                                                         ) : col.type === 'image' ? (
-                                                            <div className="flex w-full items-center justify-center">
-                                                                {image && (
-                                                                    <img
-                                                                        alt="image"
-                                                                        src={image.path}
-                                                                        className={'h-8 w-8 rounded-full'}
-                                                                    />
-                                                                )}
-                                                            </div>
+                                                            (() => {
+                                                                const img = row[col.key] as UploadedFile | null;
+
+                                                                if (!img?.path) return <FormattedString data={null} />;
+
+                                                                return (
+                                                                    <div className="flex w-full items-center justify-center">
+                                                                        {image && (
+                                                                            <img
+                                                                                alt="image"
+                                                                                src={image.path}
+                                                                                className={'h-8 w-8 rounded-full'}
+                                                                            />
+                                                                        )}
+                                                                    </div>
+                                                                );
+                                                            })()
                                                         ) : col.type === 'link' ? (
                                                             <a
                                                                 href={String(row[col.key])}
