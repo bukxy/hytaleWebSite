@@ -32,7 +32,7 @@ class VoteWebsiteResource extends JsonResource
                 'by' => $this->updatedBy
             ]),
 
-            'logo' => new FileRelationResource($this->resource, 'logo')
+            'logo' => $this->resource->logo ? new FileRelationResource($this->resource, 'logo') : null
         ];
     }
 }

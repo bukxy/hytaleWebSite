@@ -31,7 +31,7 @@ class VoteRewardResource extends JsonResource
                 'at' => $this->updated_at,
                 'by' => $this->updatedBy
             ]) : null,
-            'image' => new FileRelationResource($this->resource, 'image')
+            'image' => $this->resource->image ? new FileRelationResource($this->resource, 'image') : null
         ];
     }
 }
