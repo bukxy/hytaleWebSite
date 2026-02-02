@@ -37,13 +37,6 @@ services:
         condition: service_started
     networks: [appnet]
 
-  vite:
-    build:
-      context: .
-      dockerfile: docker/dev.Dockerfile
-    working_dir: /var/www/html
-    networks: [appnet]
-
   mysql:
     image: mysql:8.0
     environment:
