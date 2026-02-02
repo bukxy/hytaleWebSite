@@ -24,7 +24,7 @@ class VoteWebsiteController extends Controller
     private function setBreadcrumbs(array $crumbs): void
     {
         session()->put('breadcrumbs', array_merge([
-            ['title' => 'Dashboard', 'href' => '/dashboard'],
+            ['title' => 'Dashboard', 'href' => route('dashboard.home')],
             ['title' => 'Votes', 'href' => route('dashboard.vote.list')]
         ], $crumbs));
     }
@@ -37,21 +37,8 @@ class VoteWebsiteController extends Controller
         ]);
 
         return Inertia::render('dashboard/votes_websites/add_edit', [
-            'votes_websites' => VoteWebsite::with(['createdBy', 'updatedBy'])
-                ->get()
-                ->map(function ($vw) {
-                    return [
-                        'id' => $vw->id,
-                        'name' => $vw->name,
-                        'url' => $vw->url,
-                        'created_at' => $vw->created_at,
-                        'created_by' => $vw->createdBy->name,
-                        'updated_at' => $vw->updated_at,
-                        'updated_by' => $vw->updatedBy?->name,
-                        'is_enabled' => $vw->is_enabled,
-                        'has_verification' => $vw->has_verification,
-                    ];
-                }),
+            'data' => null,
+            'votes_websites' => VoteWebsiteResource::collection(VoteWebsite::with(['createdBy', 'updatedBy', 'logo'])->get()),
         ]);
     }
 
@@ -107,25 +94,9 @@ class VoteWebsiteController extends Controller
             ['title' => 'Edit vote website', 'href' => route('dashboard.vote-website.edit', $id)],
         ]);
 
-        $voteWebsite = VoteWebsite::with(['createdBy', 'updatedBy', 'logo'])->findOrFail($id)->toResource(VoteWebsiteResource::class);
-
         return Inertia::render('dashboard/votes_websites/add_edit', [
-            'data' => $voteWebsite->resolve(),
-            'votes_websites' => VoteWebsite::with(['createdBy', 'updatedBy'])
-                ->get()
-                ->map(function ($vw) {
-                    return [
-                        'id' => $vw->id,
-                        'name' => $vw->name,
-                        'url' => $vw->url,
-                        'created_at' => $vw->created_at,
-                        'created_by' => $vw->createdBy->name,
-                        'updated_at' => $vw->updated_at,
-                        'updated_by' => $vw->updatedBy?->name,
-                        'is_enabled' => $vw->is_enabled,
-                        'has_verification' => $vw->has_verification,
-                    ];
-                }),
+            'data' => VoteWebsite::with(['logo'])->findOrFail($id)->toResource(VoteWebsiteResource::class),
+            'votes_websites' => VoteWebsiteResource::collection(VoteWebsite::with(['createdBy', 'updatedBy', 'logo'])->get())
         ]);
     }
 
@@ -178,7 +149,7 @@ class VoteWebsiteController extends Controller
             return back()->withErrors($errors);
         }
 
-        return to_route('dashboard.vote-website.edit', $voteWebsite->id)->with('success', 'Vote website created successfully.');
+        return to_route('dashboard.vote-website.edit', $voteWebsite->id)->with('success', 'Vote website updated successfully.');
     }
 
     public function deleteLogo(FileUploadService $fileUploadService, int $id): RedirectResponse
