@@ -75,6 +75,8 @@ export interface TableColumn<T> {
     editHref?: NonNullable<InertiaLinkProps['href']>;
 }
 
+export interface Resource<T> { data: T }
+
 export interface ResourceCollection<T> {
     data: T[];
 }
