@@ -2,27 +2,18 @@ import { Table } from '@/components/table';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
 import voteWebsite from '@/routes/dashboard/vote-website';
-import { TableColumn } from '@/types';
+import {ResourceCollection, TableColumn } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { Area, AreaChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts';
 import {VoteWebsite} from "@/types/vote-website";
-
-// const columnsVote: TableColumn<Vote>[] = [
-//     {key: 'id', label: 'ID', width: 'w-10'},
-//     {key: 'voter_name', label: 'Voter Name', width: 'w-56'},
-//     {key: 'created_at', label: 'Voted At', width: 'w-56'},
-//     {key: 'website', label: 'Website', width: 'w-56'},
-// ]
 
 const columnsVoteWebsite: TableColumn<VoteWebsite>[] = [
     { key: 'id', label: 'ID', width: 'w-10' },
     { key: 'name', label: 'Name', width: 'w-56' },
     { key: 'logo', label: 'Logo', width: 'w-56', type: 'image' },
     { key: 'url', label: 'Url', width: 'w-56', type: 'link' },
-    { key: 'created_at', label: 'Created at', width: 'w-32', type: 'date', hms: true },
-    { key: 'created_by', label: 'Created by', width: 'w-32' },
-    { key: 'updated_at', label: 'Updated at', width: 'w-32', type: 'date', hms: true },
-    { key: 'updated_by', label: 'Updated by', width: 'w-32' },
+    { key: 'created', label: 'Created at', width: 'w-32', type: 'user' },
+    { key: 'updated', label: 'Updated by', width: 'w-32', type: 'user' },
     { key: 'is_enabled', label: 'Is active', width: 'w-10', type: 'boolean' },
     { key: 'has_verification', label: 'Has verification', width: 'w-10', type: 'boolean' },
 ];
@@ -67,11 +58,9 @@ const data = [
 ];
 
 export default function VoteList({
-    // votes,
     votes_websites,
 }: {
-    // votes: Vote[],
-    votes_websites: VoteWebsite[];
+    votes_websites: ResourceCollection<VoteWebsite>;
 }) {
     return (
         <>
@@ -118,7 +107,7 @@ export default function VoteList({
 
                         <div className="overflow-hidden">
                             <Table
-                                data={votes_websites}
+                                data={votes_websites.data}
                                 columns={columnsVoteWebsite}
                                 config={{
                                     editUrl: voteWebsite.edit.definition.url,
