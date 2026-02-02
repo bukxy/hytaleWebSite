@@ -32,13 +32,25 @@ const mainNavItems: NavItem[] = [
                 href: vote.list().url,
                 icon: Vote,
             },
+        ],
+    },
+    {
+        title: 'Votes Website',
+        icon: Vote,
+        items: [
             {
                 title: 'Create vote website',
                 href: voteWebsite.add().url,
                 icon: Vote,
             },
+        ],
+    },
+    {
+        title: 'Votes Rewards',
+        icon: Vote,
+        items: [
             {
-                title: 'Create vote reward',
+                title: 'Create',
                 href: voteReward.add().url,
                 icon: Vote,
             },
