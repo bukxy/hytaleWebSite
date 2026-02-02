@@ -34,10 +34,12 @@ class VoteRewardCreateEditRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'min:1', 'max:255', Rule::unique('votes_rewards', 'name')->ignore($id)],
             'chances' => ['required', 'integer', 'min:1', 'max:1000000'],
-            'money' => ['required', 'integer', 'min:0', 'max:1000000'],
+            'money' => ['nullable', 'integer', 'max:1000000'],
             'is_enabled' => ['required', 'boolean'],
             'is_online_required' => ['required', 'boolean'],
-            'commands' => ['required', 'string', 'min:1', 'max:255'],
+            'commands' => ['nullable', 'string', 'min:1', 'max:255'],
+            'created_by' => ['nullable', 'integer'],
+            'updated_by' => ['nullable', 'integer'],
             'image' =>
                 File::image()
                     ->min(15)
