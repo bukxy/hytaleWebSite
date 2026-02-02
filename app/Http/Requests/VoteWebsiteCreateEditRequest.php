@@ -15,10 +15,11 @@ class VoteWebsiteCreateEditRequest extends FormRequest
      */
     protected function prepareForValidation(): void
     {
-        $this->merge([
-            'user_id' => Auth::id(),
-            'created_by' => Auth::id(),
-        ]);
+        $this->merge(
+            $this->route('id')
+                ? ['updated_by' => Auth::id()]
+                : ['created_by' => Auth::id()]
+        );
     }
 
     /**
@@ -36,8 +37,8 @@ class VoteWebsiteCreateEditRequest extends FormRequest
             'is_enabled' => ['required', 'boolean'],
             'verification_key' => ['string', 'max:255'],
             'has_verification' => ['required', 'boolean'],
-            'created_by' => ['required', Rule::exists('users', 'id')],
-            'user_id' => ['required', Rule::exists('users', 'id')],
+            'created_by' => ['nullable', 'integer'],
+            'updated_by' => ['nullable', 'integer'],
             'logo' => [
                 File::image()
                     ->min(15)
