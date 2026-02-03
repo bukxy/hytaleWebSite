@@ -13,11 +13,23 @@ use Inertia\Response;
 
 class ProfileController extends Controller
 {
+
+    private function setBreadcrumbs(array $crumbs): void
+    {
+        session()->put('breadcrumbs', array_merge([
+            ['title' => 'Dashboard', 'href' => route('dashboard.home')],
+        ], $crumbs));
+    }
+
     /**
      * Show the user's profile settings page.
      */
     public function edit(Request $request): Response
     {
+        $this->setBreadcrumbs([
+            ['title' => 'Profile', 'href' => route('profile.edit')],
+        ]);
+
         return Inertia::render('dashboard/settings/profile', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => $request->session()->get('status'),

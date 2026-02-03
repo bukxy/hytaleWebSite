@@ -12,6 +12,15 @@ use Laravel\Fortify\Features;
 
 class TwoFactorAuthenticationController extends Controller implements HasMiddleware
 {
+
+
+    private function setBreadcrumbs(array $crumbs): void
+    {
+        session()->put('breadcrumbs', array_merge([
+            ['title' => 'Dashboard', 'href' => route('dashboard.home')],
+        ], $crumbs));
+    }
+
     /**
      * Get the middleware that should be assigned to the controller.
      */
@@ -27,6 +36,10 @@ class TwoFactorAuthenticationController extends Controller implements HasMiddlew
      */
     public function show(TwoFactorAuthenticationRequest $request): Response
     {
+        $this->setBreadcrumbs([
+            ['title' => 'Two-Factor Auth', 'href' => '/dashboard/settings/two-factor'],
+        ]);
+
         $request->ensureStateIsValid();
 
         return Inertia::render('dashboard/settings/two-factor', [

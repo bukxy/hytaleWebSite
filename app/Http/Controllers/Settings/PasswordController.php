@@ -11,11 +11,23 @@ use Inertia\Response;
 
 class PasswordController extends Controller
 {
+
+    private function setBreadcrumbs(array $crumbs): void
+    {
+        session()->put('breadcrumbs', array_merge([
+            ['title' => 'Dashboard', 'href' => route('dashboard.home')],
+        ], $crumbs));
+    }
+
     /**
      * Show the user's password settings page.
      */
     public function edit(): Response
     {
+        $this->setBreadcrumbs([
+            ['title' => 'Password', 'href' => '/dashboard/settings/password'],
+        ]);
+
         return Inertia::render('dashboard/settings/password');
     }
 

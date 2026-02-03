@@ -15,7 +15,7 @@ class VoteController extends Controller
     private function setBreadcrumbs(array $crumbs): void
     {
         session()->put('breadcrumbs', array_merge([
-            ['title' => 'Dashboard', 'href' => '/dashboard'],
+            ['title' => 'Dashboard', 'href' => route('dashboard.home')],
         ], $crumbs));
     }
 
